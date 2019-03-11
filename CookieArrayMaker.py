@@ -1,14 +1,13 @@
+#!/usr/bin/env python2
+# -*- coding: utf-8 -*-
+"""
+Created on Sun Mar 10 21:52:18 2019
+
+@author: mackenzieobrien
+"""
 import numpy as np
-from sklearn.linear_model import LinearRegression
-import pandas as pd
-
-df = pd.read_csv('ingredients.csv')
-
-print df.head()
-
-print df.describe()
-
-inCol = ['Calories', 'Sugar (c)', 'baking powder (tsp)', 'Flour (c)', 
+def main():
+    ingredientNames=['Sugar (c)', 'baking powder (tsp)', 'Flour (c)', 
         'chocolate chunks (oz)', 'egg yolk', 'Egg White', 'egg substitute (c)', 
         'Egg', 'melted butter (c)', 'Butter (c)', 'Brown Sugar (c)', 
         'Vanilla (tsp)', 'BakingSoda(tsp)', 'salt (tsp)', 'coarse salt (tsp)', 
@@ -45,11 +44,11 @@ inCol = ['Calories', 'Sugar (c)', 'baking powder (tsp)', 'Flour (c)',
         'coffee flavored liqueur (tbsp)', 'powdered protein supplement (scoop)', 
         'port wine (c)', 'sorghum flour (c)', 'white rice flour (c)', 'xanthan gum (tsp)', 
         'hemp seed hearts (c)', 'coconut flour (c)', 'maple syrup (c)', 
-        'ground graham cracker crumbs (c)', '(18.25 ounce) package chocolate chip cake mix with pudding', 
+        'ground grahamrackerrumbs (c)', '(18.25 ounce) package chocolate chip cake mix with pudding', 
         'pumpkin pie spice (tsp)', 'almond butter (c)', 'maple extract (tsp)', 
         'finely chopped zucchini (c)','half and half (tbsp)', 
         'dairy-free and gluten-free chocolate chips', 'nut and seed trail mix (c)', 
-        '(1 ounce) squares German sweet chocolate - chopped','matzo cake meal (c)', 
+        '(1 ounce) squares German sweet chocolate - chopped', 'matzoake meal (c)', 
         'firmly packed potato starch (c)', 'crunchy peanut butter (c)', 
         'mashed bananas (c)', 'European cookie spread (c)', 
         'instant espresso coffee powder (tbsp)', 'cornflakes cereal - curmbled (c)', 
@@ -66,26 +65,39 @@ inCol = ['Calories', 'Sugar (c)', 'baking powder (tsp)', 'Flour (c)',
         'candy-coated chocolate pieces (c)', 'white vinegar (tsp)', 
         'chopped peppermint candy (c)', 'prepared granola (c)', 
         'buttermilk baking mix (c)', 'golden raisins (c)']
+    resultArray=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+             0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+             0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+             0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+             0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+  #  print len(resultArray)
+    ingRange=[2.5,4,12,16,2,4,0.25,4,1,2,3,6,4,2,1,3,40,0.324,5,1,3,8,24,48,8.4,2,16,16,36,12,1.5,1,3,1.5,64,4.5,.33,3,2,1,
+         1,12,2,1,2,1,3,1.5,16,1.5,1.5,1,16,1,1,0.66,16,1,3,0.25,1,1.5,8,8,1,1.66,5,18.25,8,1,1,24,0.5,2,4,1,0.5,0.25,1.25,3,
+         1.5,0.5,2,0.25,0.66,2,3,0.75,8.11,1,1,4,2,5,14,6,1,0.25,0.25,.5,1,1,0.25,0.5,3,4,
+         0.25,1.25,1.25,3,1,1,0.5,1,1,1.5,2,1,1.5,2,0.5,0.75,12,1,0.5,1,1,0.5,5.28,1,0.5,0.5,
+         0.75,1.5,0.75,1,0.33,2,1,2.25,0.5,0.5,1,1,2,8,2,0.33,48,0.5,2,1,1,0.5,1,1,0.33,0.5,0.5,2.5,2,1]
+#print(len(ingRange))
+#print(len(ingredientNames))
+    #print(round(np.random.uniform(0,ingRange[0]),2))
+    i=0
+    for i in range(len(ingRange)):
+        randNum=round(np.random.uniform(0,ingRange[i]),2)
+        rounded=round_of_rating(randNum)
+        #print(rounded)
+        resultArray[i]=rounded
+        
+   
+    print(resultArray)
 
-
-
-
-y = df['Rating'].astype(float).as_matrix()
-X = df[inCol].astype(float).as_matrix()
-
-## linear regression
-reg = LinearRegression().fit(X, y)
-print reg.score(X, y)
-
-cc = reg.coef_
-for x in range(len(cc)):
-  print str(cc[x]) + " -  " + inCol[x]
-
-
-print reg.intercept_ 
-
-
-print reg.predict(np.array([[181,0,0,3,0,0,0,0,2,0,1,0.75,0,0,0,0,0,8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]]))
-print reg.predict(np.array([[135,1,0,1.5,0,0,0,0,2,0,1,1.5,1.5,1.25,1,0,0,16,0,3,0,1,0,0,0,0,0,0,0,0,0,0,1,0,0,1.5,0,0.125,0.125,0,0,0,0.5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0.5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]]))
-
-#print reg.predict(np.array([[3, 5]]))
+def round_of_rating(number):
+    """Round a number to the closest half integer.
+    >>> round_of_rating(1.3)
+    1.5
+    >>> round_of_rating(2.6)
+    2.5
+    >>> round_of_rating(3.0)
+    3.0
+    >>> round_of_rating(4.1)
+    4.0"""
+    rounded=round(number*4)
+    return rounded/ 4
