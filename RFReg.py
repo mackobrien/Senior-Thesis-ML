@@ -1,6 +1,6 @@
-import os
 import numpy as np
-from sklearn.linear_model import LinearRegression
+import os
+from sklearn.ensemble import RandomForestRegressor
 import pandas as pd
 
 df = pd.read_csv('ingredients.csv')
@@ -29,11 +29,12 @@ inCol = ['Sugar (c)', 'baking powder (tsp)', 'Flour (c)',
         'instant butterscotch pudding mix', 'confectioners sugar (c)', 
         'powdered milk (c)', 'dried tart cranberries (c)', 'almond extract (tsp)', 
         'honey (tbsp)', 'cream cheese (oz)', '3 ounce package instant pistachio pudding mix', 
-        'mint chocolate chips (c)','Kentucky Bourbon (tbsp)', 'spice cake mix (oz)', 
-        'corn syrup (tbsp)','green tea powder [matcha] (tbsp)', 'bitter sweet chocolate (c)', 
+        'creme de menthe (tbsp)', 'mint chocolate chips (c)', 'Hachiya persimmons pulp extracted', 
+        'Kentucky Bourbon (tbsp)', 'spice cake mix (oz)', 'corn syrup (tbsp)', 
+        'green tea powder [matcha] (tbsp)', 'bitter sweet chocolate (c)', 
         'caramel morsels (pieces)', 'molasses (c)', '(3.5 oz)vanilla pudding mix', 
         'cream of tartar (tsp)', 'white chocolate pudding mix (3.3 oz pkg)', 
-        'plain yogurt', 'carrots shredded (c)', 'dried cranberries (c)', 
+        'plain yogurt', 'carrots shredded (c)', 'driedranberries (c)', 
         'sifted whole wheat pastry flour (c)', 'chopped almonds (c)', 'cake flour (c)', 
         'red food coloring (tbsp)', 'sweet potato puree (c)', 'orange juice (tbsp)', 
         'gluten free flour (c)', 'almond flour (c)', 'Stevia Extract In The Raw (c)', 
@@ -46,11 +47,11 @@ inCol = ['Sugar (c)', 'baking powder (tsp)', 'Flour (c)',
         'coffee flavored liqueur (tbsp)', 'powdered protein supplement (scoop)', 
         'port wine (c)', 'sorghum flour (c)', 'white rice flour (c)', 'xanthan gum (tsp)', 
         'hemp seed hearts (c)', 'coconut flour (c)', 'maple syrup (c)', 
-        'ground graham cracker crumbs (c)', '(18.25 ounce) package chocolate chip cake mix with pudding', 
+        'ground grahamrackerrumbs (c)', '(18.25 ounce) package chocolate chip cake mix with pudding', 
         'pumpkin pie spice (tsp)', 'almond butter (c)', 'maple extract (tsp)', 
-        'finely chopped zucchini (c)','half and half (tbsp)', 
+        'finely chopped zucchini (c)', '1.5', 'half and half (tbsp)', 
         'dairy-free and gluten-free chocolate chips', 'nut and seed trail mix (c)', 
-        '(1 ounce) squares German sweet chocolate - chopped','matzo cake meal (c)', 
+        '(1 ounce) squares German sweet chocolate - chopped', 'matzoake meal (c)', 
         'firmly packed potato starch (c)', 'crunchy peanut butter (c)', 
         'mashed bananas (c)', 'European cookie spread (c)', 
         'instant espresso coffee powder (tbsp)', 'cornflakes cereal - curmbled (c)', 
@@ -71,25 +72,21 @@ inCol = ['Sugar (c)', 'baking powder (tsp)', 'Flour (c)',
 
 
 
-y = df['Rating'].astype(float).as_matrix()
-X = df[inCol].astype(float).as_matrix()
+y = df['Rating'].astype(float).values
+X = df[inCol].astype(float).values
 
 ## linear regression
-reg = LinearRegression().fit(X, y)
+reg = RandomForestRegressor().fit(X, y)
 print(reg.score(X, y))
 
-cc = reg.coef_
+cc = reg.feature_importances_
 for x in range(len(cc)):
   print(str(cc[x]) + " -  " + inCol[x])
-
-
-print(reg.intercept_)
 
 
 print(reg.predict(np.array([[0,0,3,0,0,0,0,2,0,1,0.75,0,0,0,0,0,8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]])))
 print(reg.predict(np.array([[1,0,1.5,0,0,0,0,2,0,1,1.5,1.5,1.25,1,0,0,16,0,3,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1.5,0,0.125,0.125,0,0,0,0.5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0.5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]])))
 
-#print(reg.predict(np.array([[3, 5]])))
 
 
 
@@ -99,7 +96,7 @@ sigma = np.std(X, axis=0)
 bestRank = -1000000
 bestRecipe = []
 
-f = 'LinReg-res.csv'
+f = 'RFReg-res.csv'
 if os.path.exists(f):
   rdf = pd.read_csv(f, index_col=0)
 else:
@@ -131,9 +128,4 @@ while True:
 
 
 
-<<<<<<< HEAD
-=======
-print reg.predict(np.array([[181,0,0,3,0,0,0,0,2,0,1,0.75,0,0,0,0,0,8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]]))
-print reg.predict(np.array([[135,1,0,1.5,0,0,0,0,2,0,1,1.5,1.5,1.25,1,0,0,16,0,3,0,1,0,0,0,0,0,0,0,0,0,0,1,0,0,1.5,0,0.125,0.125,0,0,0,0.5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0.5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]]))
->>>>>>> 69504fc6dcb789b61d0483635f208592144bd4a8
 
