@@ -32,12 +32,11 @@ inCol = ['Sugar (c)', 'baking powder (tsp)', 'Flour (c)',
         'instant butterscotch pudding mix', 'confectioners sugar (c)', 
         'powdered milk (c)', 'dried tart cranberries (c)', 'almond extract (tsp)', 
         'honey (tbsp)', 'cream cheese (oz)', '3 ounce package instant pistachio pudding mix', 
-        'creme de menthe (tbsp)', 'mint chocolate chips (c)', 'Hachiya persimmons pulp extracted', 
-        'Kentucky Bourbon (tbsp)', 'spice cake mix (oz)', 'corn syrup (tbsp)', 
-        'green tea powder [matcha] (tbsp)', 'bitter sweet chocolate (c)', 
+        'mint chocolate chips (c)','Kentucky Bourbon (tbsp)', 'spice cake mix (oz)', 
+        'corn syrup (tbsp)','green tea powder [matcha] (tbsp)', 'bitter sweet chocolate (c)', 
         'caramel morsels (pieces)', 'molasses (c)', '(3.5 oz)vanilla pudding mix', 
         'cream of tartar (tsp)', 'white chocolate pudding mix (3.3 oz pkg)', 
-        'plain yogurt', 'carrots shredded (c)', 'driedranberries (c)', 
+        'plain yogurt', 'carrots shredded (c)', 'dried cranberries (c)', 
         'sifted whole wheat pastry flour (c)', 'chopped almonds (c)', 'cake flour (c)', 
         'red food coloring (tbsp)', 'sweet potato puree (c)', 'orange juice (tbsp)', 
         'gluten free flour (c)', 'almond flour (c)', 'Stevia Extract In The Raw (c)', 
@@ -50,11 +49,11 @@ inCol = ['Sugar (c)', 'baking powder (tsp)', 'Flour (c)',
         'coffee flavored liqueur (tbsp)', 'powdered protein supplement (scoop)', 
         'port wine (c)', 'sorghum flour (c)', 'white rice flour (c)', 'xanthan gum (tsp)', 
         'hemp seed hearts (c)', 'coconut flour (c)', 'maple syrup (c)', 
-        'ground grahamrackerrumbs (c)', '(18.25 ounce) package chocolate chip cake mix with pudding', 
+        'ground graham cracker crumbs (c)', '(18.25 ounce) package chocolate chip cake mix with pudding', 
         'pumpkin pie spice (tsp)', 'almond butter (c)', 'maple extract (tsp)', 
-        'finely chopped zucchini (c)', '1.5', 'half and half (tbsp)', 
+        'finely chopped zucchini (c)','half and half (tbsp)', 
         'dairy-free and gluten-free chocolate chips', 'nut and seed trail mix (c)', 
-        '(1 ounce) squares German sweet chocolate - chopped', 'matzoake meal (c)', 
+        '(1 ounce) squares German sweet chocolate - chopped','matzo cake meal (c)', 
         'firmly packed potato starch (c)', 'crunchy peanut butter (c)', 
         'mashed bananas (c)', 'European cookie spread (c)', 
         'instant espresso coffee powder (tbsp)', 'cornflakes cereal - curmbled (c)', 
@@ -84,74 +83,80 @@ scaler = StandardScaler()
 scaler.fit(X)
 X = scaler.transform(X)
 
-opt = BayesSearchCV( SVR(kernel='linear', max_iter=100000),
-        { 'C': Real(1e-2, 1e+6, prior='log-uniform'), 
-          'epsilon': Real(1e-2, 1e+1, prior='log-uniform'), 
-        }, n_iter=50, n_points=2, n_jobs=2, cv=4, verbose=1, return_train_score=True)
-
-opt.fit(X, y)
-
-fullR = opt.best_score_
-print("cv=" + str(opt.best_score_) + " full=" + str(opt.score(X, y)))
-print(opt.best_params_)
-
-
-
-## SVM regression
-clf = SVR(kernel='linear',
-          C=opt.best_params_['C'], 
-          epsilon=opt.best_params_['epsilon'],
-          verbose=1)
-clf.fit(X, y)
-print(clf.score(X, y))
-
-#cc = clf.coef_
-#for x in range(len(cc)):
-#  print(str(cc[x]) + " -  " + inCol[x])
-
-
-#print(clf.intercept_ )
-
-
-print(clf.predict(scaler.transform(np.array([[0,0,3,0,0,0,0,2,0,1,0.75,0,0,0,0,0,8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]]))))
-print(clf.predict(scaler.transform(np.array([[1,0,1.5,0,0,0,0,2,0,1,1.5,1.5,1.25,1,0,0,16,0,3,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1.5,0,0.125,0.125,0,0,0,0.5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0.5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]]))))
-
-#print(reg.predict(np.array([[3, 5]])))
-
-
-## generating random recipe
-bestRank = -1000000
-bestRecipe = []
-
-f = 'SVMReg-res.csv'
-if os.path.exists(f):
-  rdf = pd.read_csv(f, index_col=0)
-else:
-  rdf = pd.DataFrame()
-
 while True:
-  new = np.abs(np.floor(np.random.normal(mu, sigma)*16)/16)
-  rank = clf.predict(scaler.transform([new]))[0]
-  if rank > bestRank:
-    bestRank = rank
-    bestRecipe = new
-    bestDist = 1000000
-    for recipe in X:
-      dist = np.linalg.norm(recipe-new)
-      if dist < bestDist:
-        bestDist = dist
-    print(bestRecipe)
-    br = {}
-    br['#Predicted Rank'] = bestRank
-    br['#Uniqueness'] = bestDist
-    br['#Simplicity'] = np.linalg.norm(new)
-    for x in range(len(inCol)):
-      br[inCol[x]] = bestRecipe[x]
-    #print(br)
-    rdf = rdf.append(br, ignore_index=True)
-    #print(rdf)
-    rdf.to_csv(f)
-    print("Rank: " + str(bestRank) + " Distance: " + str(bestDist) + " Norm: " + str(br['#Simplicity']))
+  opt = BayesSearchCV( SVR(kernel='linear', max_iter=100000),
+          { 'C': Real(1e-2, 1e+6, prior='log-uniform'), 
+            'epsilon': Real(1e-2, 1e+1, prior='log-uniform'), 
+          }, n_iter=100, n_points=2, n_jobs=8, cv=4, verbose=1, return_train_score=True)
+  
+  opt.fit(X, y)
+  
+  fullR = opt.best_score_
+  print("cv=" + str(opt.best_score_) + " full=" + str(opt.score(X, y)))
+  print(opt.best_params_)
+  
+  
+  
+  ## SVM regression
+  clf = SVR(kernel='linear',
+            C=opt.best_params_['C'], 
+            epsilon=opt.best_params_['epsilon'],
+            verbose=1)
+  clf.fit(X, y)
+  print(clf.score(X, y))
+  
+  #cc = clf.coef_
+  #for x in range(len(cc)):
+  #  print(str(cc[x]) + " -  " + inCol[x])
+  
+  
+  #print(clf.intercept_ )
+  
+  
+  print(clf.predict(scaler.transform(np.array([[0,0,3,0,0,0,0,2,0,1,0.75,0,0,0,0,0,8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]]))))
+  print(clf.predict(scaler.transform(np.array([[1,0,1.5,0,0,0,0,2,0,1,1.5,1.5,1.25,1,0,0,16,0,3,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1.5,0,0.125,0.125,0,0,0,0.5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0.5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]]))))
+  
+  #print(reg.predict(np.array([[3, 5]])))
+  
+  
+  ## generating random recipe
+  bestRank = -1000000
+  bestRecipe = []
+  
+  f = 'SVMReg-res.csv'
+  if os.path.exists(f):
+    rdf = pd.read_csv(f, index_col=0)
+  else:
+    rdf = pd.DataFrame()
+  
+  cnt = 0
+  while True:
+    new = np.abs(np.floor(np.random.normal(mu, sigma)*16)/16)
+    rank = clf.predict(scaler.transform([new]))[0]
+    if rank > bestRank:
+      bestRank = rank
+      bestRecipe = new
+      bestDist = 1000000
+      for recipe in X:
+        dist = np.linalg.norm(recipe-new)
+        if dist < bestDist:
+          bestDist = dist
+      print(bestRecipe)
+      br = {}
+      br['#Predicted Rank'] = bestRank
+      br['#Uniqueness'] = bestDist
+      br['#Simplicity'] = np.linalg.norm(new)
+      for x in range(len(inCol)):
+        br[inCol[x]] = bestRecipe[x]
+      #print(br)
+      rdf = rdf.append(br, ignore_index=True)
+      #print(rdf)
+      rdf.to_csv(f)
+      print("Rank: " + str(bestRank) + " Distance: " + str(bestDist) + " Norm: " + str(br['#Simplicity']))
+      cnt = 0
+    cnt += 1
+    if cnt > 1000000:
+      break
 
 
 

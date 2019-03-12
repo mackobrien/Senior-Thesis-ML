@@ -36,12 +36,11 @@ inCol = ['Sugar (c)', 'baking powder (tsp)', 'Flour (c)',
         'instant butterscotch pudding mix', 'confectioners sugar (c)', 
         'powdered milk (c)', 'dried tart cranberries (c)', 'almond extract (tsp)', 
         'honey (tbsp)', 'cream cheese (oz)', '3 ounce package instant pistachio pudding mix', 
-        'creme de menthe (tbsp)', 'mint chocolate chips (c)', 'Hachiya persimmons pulp extracted', 
-        'Kentucky Bourbon (tbsp)', 'spice cake mix (oz)', 'corn syrup (tbsp)', 
-        'green tea powder [matcha] (tbsp)', 'bitter sweet chocolate (c)', 
+        'mint chocolate chips (c)','Kentucky Bourbon (tbsp)', 'spice cake mix (oz)', 
+        'corn syrup (tbsp)','green tea powder [matcha] (tbsp)', 'bitter sweet chocolate (c)', 
         'caramel morsels (pieces)', 'molasses (c)', '(3.5 oz)vanilla pudding mix', 
         'cream of tartar (tsp)', 'white chocolate pudding mix (3.3 oz pkg)', 
-        'plain yogurt', 'carrots shredded (c)', 'driedranberries (c)', 
+        'plain yogurt', 'carrots shredded (c)', 'dried cranberries (c)', 
         'sifted whole wheat pastry flour (c)', 'chopped almonds (c)', 'cake flour (c)', 
         'red food coloring (tbsp)', 'sweet potato puree (c)', 'orange juice (tbsp)', 
         'gluten free flour (c)', 'almond flour (c)', 'Stevia Extract In The Raw (c)', 
@@ -54,11 +53,11 @@ inCol = ['Sugar (c)', 'baking powder (tsp)', 'Flour (c)',
         'coffee flavored liqueur (tbsp)', 'powdered protein supplement (scoop)', 
         'port wine (c)', 'sorghum flour (c)', 'white rice flour (c)', 'xanthan gum (tsp)', 
         'hemp seed hearts (c)', 'coconut flour (c)', 'maple syrup (c)', 
-        'ground grahamrackerrumbs (c)', '(18.25 ounce) package chocolate chip cake mix with pudding', 
+        'ground graham cracker crumbs (c)', '(18.25 ounce) package chocolate chip cake mix with pudding', 
         'pumpkin pie spice (tsp)', 'almond butter (c)', 'maple extract (tsp)', 
-        'finely chopped zucchini (c)', '1.5', 'half and half (tbsp)', 
+        'finely chopped zucchini (c)','half and half (tbsp)', 
         'dairy-free and gluten-free chocolate chips', 'nut and seed trail mix (c)', 
-        '(1 ounce) squares German sweet chocolate - chopped', 'matzoake meal (c)', 
+        '(1 ounce) squares German sweet chocolate - chopped','matzo cake meal (c)', 
         'firmly packed potato starch (c)', 'crunchy peanut butter (c)', 
         'mashed bananas (c)', 'European cookie spread (c)', 
         'instant espresso coffee powder (tbsp)', 'cornflakes cereal - curmbled (c)', 
@@ -87,138 +86,17 @@ np.random.seed(seed)
 def baseline_model():
   # create model
   model = Sequential()
-  model.add(Dense(165, input_dim=165, kernel_initializer='normal', activation='relu'))
+  model.add(Dense(162, input_dim=162, kernel_initializer='normal', activation='relu'))
   model.add(Dense(1, kernel_initializer='normal'))
   # Compile model
   model.compile(loss='mean_squared_error', optimizer='adam')
   return model
 
-# evaluate model with standardized dataset
-estimator = KerasRegressor(build_fn=baseline_model, epochs=400, batch_size=5,
-                           verbose=0)
-
-kfold = KFold(n_splits=10, random_state=seed)
-results = cross_val_score(estimator, X, y, cv=kfold, n_jobs=2)
-print("Results: %.2f (%.2f) MSE" % (results.mean(), results.std()))
-
-estimator.fit(X, y)
-prediction = estimator.predict(X)
-print(r2_score(y, prediction))
-
-print(estimator.predict(np.array([[0,0,3,0,0,0,0,2,0,1,0.75,0,0,0,0,0,8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]])))
-print(estimator.predict(np.array([[1,0,1.5,0,0,0,0,2,0,1,1.5,1.5,1.25,1,0,0,16,0,3,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1.5,0,0.125,0.125,0,0,0,0.5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0.5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]])))
-
-## generating random recipe
-mu = np.mean(X, axis=0)
-sigma = np.std(X, axis=0)
-bestRank = -1000000
-bestRecipe = []
-
-f = 'NNReg-res.csv'
-if os.path.exists(f):
-  rdf = pd.read_csv(f, index_col=0)
-else:
-  rdf = pd.DataFrame()
-
-cnt = 0
-while True:
-  new = np.abs(np.floor(np.random.normal(mu, sigma)*16)/16)
-  rank = estimator.predict(np.array([new]))
-  if rank > bestRank:
-    bestRank = rank
-    bestRecipe = new
-    bestDist = 1000000
-    for recipe in X:
-      dist = np.linalg.norm(recipe-new)
-      if dist < bestDist:
-        bestDist = dist
-    print(bestRecipe)
-    br = {}
-    br['#Predicted Rank'] = bestRank
-    br['#Uniqueness'] = bestDist
-    br['#Simplicity'] = np.linalg.norm(new)
-    for x in range(len(inCol)):
-      br[inCol[x]] = bestRecipe[x]
-    #print(br)
-    rdf = rdf.append(br, ignore_index=True)
-    #print(rdf)
-    rdf.to_csv(f)
-    print("Rank: " + str(bestRank) + " Distance: " + str(bestDist) + " Norm: " + str(br['#Simplicity']))
-    cnt = 0
-  cnt += 1
-  if cnt > 1000:
-    break
-cnt = 0
-
-
-
-
-# evaluate model with standardized dataset
-np.random.seed(seed)
-estimators = []
-estimators.append(('standardize', StandardScaler()))
-estimators.append(('mlp', KerasRegressor(build_fn=baseline_model, epochs=400,
-                                         batch_size=5, verbose=0)))
-pipeline = Pipeline(estimators)
-kfold = KFold(n_splits=10, random_state=seed)
-results = cross_val_score(pipeline, X, y, cv=kfold, n_jobs=2)
-print("Standardized: %.2f (%.2f) MSE" % (results.mean(), results.std()))
-
-pipeline.fit(X, y)
-prediction = pipeline.predict(X)
-print(r2_score(y, prediction))
-
-print(pipeline.predict(np.array([[0,0,3,0,0,0,0,2,0,1,0.75,0,0,0,0,0,8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]])))
-print(pipeline.predict(np.array([[1,0,1.5,0,0,0,0,2,0,1,1.5,1.5,1.25,1,0,0,16,0,3,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1.5,0,0.125,0.125,0,0,0,0.5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0.5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]])))
-
-## generating random recipe
-mu = np.mean(X, axis=0)
-sigma = np.std(X, axis=0)
-bestRank = -1000000
-bestRecipe = []
-
-f = 'NNNReg-res.csv'
-if os.path.exists(f):
-  rdf = pd.read_csv(f, index_col=0)
-else:
-  rdf = pd.DataFrame()
-
-while True:
-  new = np.abs(np.floor(np.random.normal(mu, sigma)*16)/16)
-  rank = pipeline.predict(np.array([new]))
-  if rank > bestRank:
-    bestRank = rank
-    bestRecipe = new
-    bestDist = 1000000
-    for recipe in X:
-      dist = np.linalg.norm(recipe-new)
-      if dist < bestDist:
-        bestDist = dist
-    print(bestRecipe)
-    br = {}
-    br['#Predicted Rank'] = bestRank
-    br['#Uniqueness'] = bestDist
-    br['#Simplicity'] = np.linalg.norm(new)
-    for x in range(len(inCol)):
-      br[inCol[x]] = bestRecipe[x]
-    #print(br)
-    rdf = rdf.append(br, ignore_index=True)
-    #print(rdf)
-    rdf.to_csv(f)
-    print("Rank: " + str(bestRank) + " Distance: " + str(bestDist) + " Norm: " + str(br['#Simplicity']))
-    cnt = 0
-  cnt += 1
-  if cnt > 1000:
-    break
-cnt = 0
-
-
-
 # define the model
 def larger_model():
   # create model
   model = Sequential()
-  model.add(Dense(128, input_dim=165, kernel_initializer='normal', activation='relu'))
+  model.add(Dense(128, input_dim=162, kernel_initializer='normal', activation='relu'))
   model.add(Dense(32, kernel_initializer='normal', activation='relu'))
   model.add(Dense(8, kernel_initializer='normal', activation='relu'))
   model.add(Dense(1, kernel_initializer='normal'))
@@ -226,138 +104,260 @@ def larger_model():
   model.compile(loss='mean_squared_error', optimizer='adam')
   return model
 
-np.random.seed(seed)
-estimators = []
-estimators.append(('standardize', StandardScaler()))
-estimators.append(('mlp', KerasRegressor(build_fn=larger_model, epochs=400, 
-                                         batch_size=5, verbose=0)))
-pipeline = Pipeline(estimators)
-kfold = KFold(n_splits=10, random_state=seed)
-results = cross_val_score(pipeline, X, y, cv=kfold, n_jobs=2)
-print("Larger: %.2f (%.2f) MSE" % (results.mean(), results.std()))
-
-
-pipeline.fit(X, y)
-prediction = pipeline.predict(X)
-print(r2_score(y, prediction))
-
-print(pipeline.predict(np.array([[0,0,3,0,0,0,0,2,0,1,0.75,0,0,0,0,0,8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]])))
-print(pipeline.predict(np.array([[1,0,1.5,0,0,0,0,2,0,1,1.5,1.5,1.25,1,0,0,16,0,3,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1.5,0,0.125,0.125,0,0,0,0.5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0.5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]])))
-
-## generating random recipe
-mu = np.mean(X, axis=0)
-sigma = np.std(X, axis=0)
-bestRank = -1000000
-bestRecipe = []
-
-f = 'DLReg-res.csv'
-if os.path.exists(f):
-  rdf = pd.read_csv(f, index_col=0)
-else:
-  rdf = pd.DataFrame()
-
-while True:
-  new = np.abs(np.floor(np.random.normal(mu, sigma)*16)/16)
-  rank = pipeline.predict(np.array([new]))
-  if rank > bestRank:
-    bestRank = rank
-    bestRecipe = new
-    bestDist = 1000000
-    for recipe in X:
-      dist = np.linalg.norm(recipe-new)
-      if dist < bestDist:
-        bestDist = dist
-    print(bestRecipe)
-    br = {}
-    br['#Predicted Rank'] = bestRank
-    br['#Uniqueness'] = bestDist
-    br['#Simplicity'] = np.linalg.norm(new)
-    for x in range(len(inCol)):
-      br[inCol[x]] = bestRecipe[x]
-    #print(br)
-    rdf = rdf.append(br, ignore_index=True)
-    #print(rdf)
-    rdf.to_csv(f)
-    print("Rank: " + str(bestRank) + " Distance: " + str(bestDist) + " Norm: " + str(br['#Simplicity']))
-    cnt = 0
-  cnt += 1
-  if cnt > 1000:
-    break
-cnt = 0
-
-
-
-
-
 # define wider model
 def wider_model():
   # create model
   model = Sequential()
-  model.add(Dense(256, input_dim=165, kernel_initializer='normal', activation='relu'))
+  model.add(Dense(256, input_dim=162, kernel_initializer='normal', activation='relu'))
   model.add(Dense(1, kernel_initializer='normal'))
   # Compile model
   model.compile(loss='mean_squared_error', optimizer='adam')
   return model
 
-np.random.seed(seed)
-estimators = []
-estimators.append(('standardize', StandardScaler()))
-estimators.append(('mlp', KerasRegressor(build_fn=wider_model, epochs=400, 
-                                         batch_size=5, verbose=0)))
-pipeline = Pipeline(estimators)
-kfold = KFold(n_splits=10, random_state=seed)
-results = cross_val_score(pipeline, X, y, cv=kfold, n_jobs=2)
-print("Wider: %.2f (%.2f) MSE" % (results.mean(), results.std()))
-
-
-pipeline.fit(X, y)
-prediction = pipeline.predict(X)
-print(r2_score(y, prediction))
-
-print(pipeline.predict(np.array([[0,0,3,0,0,0,0,2,0,1,0.75,0,0,0,0,0,8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]])))
-print(pipeline.predict(np.array([[1,0,1.5,0,0,0,0,2,0,1,1.5,1.5,1.25,1,0,0,16,0,3,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1.5,0,0.125,0.125,0,0,0,0.5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0.5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]])))
-
-## generating random recipe
-mu = np.mean(X, axis=0)
-sigma = np.std(X, axis=0)
-bestRank = -1000000
-bestRecipe = []
-
-f = 'WNNReg-res.csv'
-if os.path.exists(f):
-  rdf = pd.read_csv(f, index_col=0)
-else:
-  rdf = pd.DataFrame()
-
-rdf = pd.DataFrame()
 while True:
-  new = np.abs(np.floor(np.random.normal(mu, sigma)*16)/16)
-  rank = pipeline.predict(np.array([new]))
-  if rank > bestRank:
-    bestRank = rank
-    bestRecipe = new
-    bestDist = 1000000
-    for recipe in X:
-      dist = np.linalg.norm(recipe-new)
-      if dist < bestDist:
-        bestDist = dist
-    print(bestRecipe)
-    br = {}
-    br['#Predicted Rank'] = bestRank
-    br['#Uniqueness'] = bestDist
-    br['#Simplicity'] = np.linalg.norm(new)
-    for x in range(len(inCol)):
-      br[inCol[x]] = bestRecipe[x]
-    #print(br)
-    rdf = rdf.append(br, ignore_index=True)
-    #print(rdf)
-    rdf.to_csv(f)
-    print("Rank: " + str(bestRank) + " Distance: " + str(bestDist) + " Norm: " + str(br['#Simplicity']))
-    cnt = 0
-  cnt += 1
-  if cnt > 1000:
-    break
-cnt = 0
+  # evaluate model with standardized dataset
+  estimator = KerasRegressor(build_fn=baseline_model, epochs=400, batch_size=5,
+                             verbose=0)
+  
+  kfold = KFold(n_splits=10, random_state=seed)
+  results = cross_val_score(estimator, X, y, cv=kfold, n_jobs=8)
+  print("Results: %.2f (%.2f) MSE" % (results.mean(), results.std()))
+  
+  estimator.fit(X, y)
+  prediction = estimator.predict(X)
+  print(r2_score(y, prediction))
+  
+  print(estimator.predict(np.array([[0,0,3,0,0,0,0,2,0,1,0.75,0,0,0,0,0,8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]])))
+  print(estimator.predict(np.array([[1,0,1.5,0,0,0,0,2,0,1,1.5,1.5,1.25,1,0,0,16,0,3,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1.5,0,0.125,0.125,0,0,0,0.5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0.5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]])))
+  
+  ## generating random recipe
+  mu = np.mean(X, axis=0)
+  sigma = np.std(X, axis=0)
+  bestRank = -1000000
+  bestRecipe = []
+  
+  f = 'NNReg-res.csv'
+  if os.path.exists(f):
+    rdf = pd.read_csv(f, index_col=0)
+  else:
+    rdf = pd.DataFrame()
+  
+  cnt = 0
+  while True:
+    new = np.abs(np.floor(np.random.normal(mu, sigma)*16)/16)
+    rank = estimator.predict(np.array([new]))
+    if rank > bestRank:
+      bestRank = rank
+      bestRecipe = new
+      bestDist = 1000000
+      for recipe in X:
+        dist = np.linalg.norm(recipe-new)
+        if dist < bestDist:
+          bestDist = dist
+      print(bestRecipe)
+      br = {}
+      br['#Predicted Rank'] = bestRank
+      br['#Uniqueness'] = bestDist
+      br['#Simplicity'] = np.linalg.norm(new)
+      for x in range(len(inCol)):
+        br[inCol[x]] = bestRecipe[x]
+      #print(br)
+      rdf = rdf.append(br, ignore_index=True)
+      #print(rdf)
+      rdf.to_csv(f)
+      print("Rank: " + str(bestRank) + " Distance: " + str(bestDist) + " Norm: " + str(br['#Simplicity']))
+      cnt = 0
+    cnt += 1
+    if cnt > 1000000:
+      break
+  cnt = 0
+  
+  
+  
+  
+  # evaluate model with standardized dataset
+  np.random.seed(seed)
+  estimators = []
+  estimators.append(('standardize', StandardScaler()))
+  estimators.append(('mlp', KerasRegressor(build_fn=baseline_model, epochs=400,
+                                           batch_size=5, verbose=0)))
+  pipeline = Pipeline(estimators)
+  kfold = KFold(n_splits=10, random_state=seed)
+  results = cross_val_score(pipeline, X, y, cv=kfold, n_jobs=8)
+  print("Standardized: %.2f (%.2f) MSE" % (results.mean(), results.std()))
+  
+  pipeline.fit(X, y)
+  prediction = pipeline.predict(X)
+  print(r2_score(y, prediction))
+  
+  print(pipeline.predict(np.array([[0,0,3,0,0,0,0,2,0,1,0.75,0,0,0,0,0,8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]])))
+  print(pipeline.predict(np.array([[1,0,1.5,0,0,0,0,2,0,1,1.5,1.5,1.25,1,0,0,16,0,3,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1.5,0,0.125,0.125,0,0,0,0.5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0.5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]])))
+  
+  ## generating random recipe
+  mu = np.mean(X, axis=0)
+  sigma = np.std(X, axis=0)
+  bestRank = -1000000
+  bestRecipe = []
+  
+  f = 'NNNReg-res.csv'
+  if os.path.exists(f):
+    rdf = pd.read_csv(f, index_col=0)
+  else:
+    rdf = pd.DataFrame()
+  
+  while True:
+    new = np.abs(np.floor(np.random.normal(mu, sigma)*16)/16)
+    rank = pipeline.predict(np.array([new]))
+    if rank > bestRank:
+      bestRank = rank
+      bestRecipe = new
+      bestDist = 1000000
+      for recipe in X:
+        dist = np.linalg.norm(recipe-new)
+        if dist < bestDist:
+          bestDist = dist
+      print(bestRecipe)
+      br = {}
+      br['#Predicted Rank'] = bestRank
+      br['#Uniqueness'] = bestDist
+      br['#Simplicity'] = np.linalg.norm(new)
+      for x in range(len(inCol)):
+        br[inCol[x]] = bestRecipe[x]
+      #print(br)
+      rdf = rdf.append(br, ignore_index=True)
+      #print(rdf)
+      rdf.to_csv(f)
+      print("Rank: " + str(bestRank) + " Distance: " + str(bestDist) + " Norm: " + str(br['#Simplicity']))
+      cnt = 0
+    cnt += 1
+    if cnt > 1000000:
+      break
+  cnt = 0
+  
+  
+  
+  np.random.seed(seed)
+  estimators = []
+  estimators.append(('standardize', StandardScaler()))
+  estimators.append(('mlp', KerasRegressor(build_fn=larger_model, epochs=400, 
+                                           batch_size=5, verbose=0)))
+  pipeline = Pipeline(estimators)
+  kfold = KFold(n_splits=10, random_state=seed)
+  results = cross_val_score(pipeline, X, y, cv=kfold, n_jobs=8)
+  print("Larger: %.2f (%.2f) MSE" % (results.mean(), results.std()))
+  
+  
+  pipeline.fit(X, y)
+  prediction = pipeline.predict(X)
+  print(r2_score(y, prediction))
+  
+  print(pipeline.predict(np.array([[0,0,3,0,0,0,0,2,0,1,0.75,0,0,0,0,0,8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]])))
+  print(pipeline.predict(np.array([[1,0,1.5,0,0,0,0,2,0,1,1.5,1.5,1.25,1,0,0,16,0,3,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1.5,0,0.125,0.125,0,0,0,0.5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0.5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]])))
+  
+  ## generating random recipe
+  mu = np.mean(X, axis=0)
+  sigma = np.std(X, axis=0)
+  bestRank = -1000000
+  bestRecipe = []
+  
+  f = 'DLReg-res.csv'
+  if os.path.exists(f):
+    rdf = pd.read_csv(f, index_col=0)
+  else:
+    rdf = pd.DataFrame()
+  
+  while True:
+    new = np.abs(np.floor(np.random.normal(mu, sigma)*16)/16)
+    rank = pipeline.predict(np.array([new]))
+    if rank > bestRank:
+      bestRank = rank
+      bestRecipe = new
+      bestDist = 1000000
+      for recipe in X:
+        dist = np.linalg.norm(recipe-new)
+        if dist < bestDist:
+          bestDist = dist
+      print(bestRecipe)
+      br = {}
+      br['#Predicted Rank'] = bestRank
+      br['#Uniqueness'] = bestDist
+      br['#Simplicity'] = np.linalg.norm(new)
+      for x in range(len(inCol)):
+        br[inCol[x]] = bestRecipe[x]
+      #print(br)
+      rdf = rdf.append(br, ignore_index=True)
+      #print(rdf)
+      rdf.to_csv(f)
+      print("Rank: " + str(bestRank) + " Distance: " + str(bestDist) + " Norm: " + str(br['#Simplicity']))
+      cnt = 0
+    cnt += 1
+    if cnt > 1000000:
+      break
+  cnt = 0
+  
+  
+  
+  
+  
+  np.random.seed(seed)
+  estimators = []
+  estimators.append(('standardize', StandardScaler()))
+  estimators.append(('mlp', KerasRegressor(build_fn=wider_model, epochs=400, 
+                                           batch_size=5, verbose=0)))
+  pipeline = Pipeline(estimators)
+  kfold = KFold(n_splits=10, random_state=seed)
+  results = cross_val_score(pipeline, X, y, cv=kfold, n_jobs=8)
+  print("Wider: %.2f (%.2f) MSE" % (results.mean(), results.std()))
+  
+  
+  pipeline.fit(X, y)
+  prediction = pipeline.predict(X)
+  print(r2_score(y, prediction))
+  
+  print(pipeline.predict(np.array([[0,0,3,0,0,0,0,2,0,1,0.75,0,0,0,0,0,8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]])))
+  print(pipeline.predict(np.array([[1,0,1.5,0,0,0,0,2,0,1,1.5,1.5,1.25,1,0,0,16,0,3,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1.5,0,0.125,0.125,0,0,0,0.5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0.5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]])))
+  
+  ## generating random recipe
+  mu = np.mean(X, axis=0)
+  sigma = np.std(X, axis=0)
+  bestRank = -1000000
+  bestRecipe = []
+  
+  f = 'WNNReg-res.csv'
+  if os.path.exists(f):
+    rdf = pd.read_csv(f, index_col=0)
+  else:
+    rdf = pd.DataFrame()
+  
+  rdf = pd.DataFrame()
+  while True:
+    new = np.abs(np.floor(np.random.normal(mu, sigma)*16)/16)
+    rank = pipeline.predict(np.array([new]))
+    if rank > bestRank:
+      bestRank = rank
+      bestRecipe = new
+      bestDist = 1000000
+      for recipe in X:
+        dist = np.linalg.norm(recipe-new)
+        if dist < bestDist:
+          bestDist = dist
+      print(bestRecipe)
+      br = {}
+      br['#Predicted Rank'] = bestRank
+      br['#Uniqueness'] = bestDist
+      br['#Simplicity'] = np.linalg.norm(new)
+      for x in range(len(inCol)):
+        br[inCol[x]] = bestRecipe[x]
+      #print(br)
+      rdf = rdf.append(br, ignore_index=True)
+      #print(rdf)
+      rdf.to_csv(f)
+      print("Rank: " + str(bestRank) + " Distance: " + str(bestDist) + " Norm: " + str(br['#Simplicity']))
+      cnt = 0
+    cnt += 1
+    if cnt > 1000000:
+      break
+  cnt = 0
 
 
 

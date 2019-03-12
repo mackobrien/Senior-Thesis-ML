@@ -71,69 +71,67 @@ inCol = ['Sugar (c)', 'baking powder (tsp)', 'Flour (c)',
 
 
 
-y = df['Rating'].astype(float).as_matrix()
-X = df[inCol].astype(float).as_matrix()
-
-## linear regression
-reg = LinearRegression().fit(X, y)
-print(reg.score(X, y))
-
-cc = reg.coef_
-for x in range(len(cc)):
-  print(str(cc[x]) + " -  " + inCol[x])
-
-
-print(reg.intercept_)
-
-
-print(reg.predict(np.array([[0,0,3,0,0,0,0,2,0,1,0.75,0,0,0,0,0,8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]])))
-print(reg.predict(np.array([[1,0,1.5,0,0,0,0,2,0,1,1.5,1.5,1.25,1,0,0,16,0,3,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1.5,0,0.125,0.125,0,0,0,0.5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0.5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]])))
-
-#print(reg.predict(np.array([[3, 5]])))
-
-
-
-## generating random recipe
-mu = np.mean(X, axis=0)
-sigma = np.std(X, axis=0)
-bestRank = -1000000
-bestRecipe = []
-
-f = 'LinReg-res.csv'
-if os.path.exists(f):
-  rdf = pd.read_csv(f, index_col=0)
-else:
-  rdf = pd.DataFrame()
+y = df['Rating'].astype(float).values
+X = df[inCol].astype(float).values
 
 while True:
-  new = np.abs(np.floor(np.random.normal(mu, sigma)*16)/16)
-  rank = reg.predict([new])
-  if rank > bestRank:
-    bestRank = rank
-    bestRecipe = new
-    bestDist = 1000000
-    for recipe in X:
-      dist = np.linalg.norm(recipe-new)
-      if dist < bestDist:
-        bestDist = dist
-    print(bestRecipe)
-    br = {}
-    br['#Predicted Rank'] = bestRank[0]
-    br['#Uniqueness'] = bestDist
-    br['#Simplicity'] = np.linalg.norm(new)
-    for x in range(len(inCol)):
-      br[inCol[x]] = bestRecipe[x]
-    #print(br)
-    rdf = rdf.append(br, ignore_index=True)
-    #print(rdf)
-    rdf.to_csv(f)
-    print("Rank: " + str(bestRank) + " Distance: " + str(bestDist) + " Norm: " + str(br['#Simplicity']))
-
-
-
-<<<<<<< HEAD
-=======
-print reg.predict(np.array([[181,0,0,3,0,0,0,0,2,0,1,0.75,0,0,0,0,0,8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]]))
-print reg.predict(np.array([[135,1,0,1.5,0,0,0,0,2,0,1,1.5,1.5,1.25,1,0,0,16,0,3,0,1,0,0,0,0,0,0,0,0,0,0,1,0,0,1.5,0,0.125,0.125,0,0,0,0.5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0.5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]]))
->>>>>>> 69504fc6dcb789b61d0483635f208592144bd4a8
+  ## linear regression
+  reg = LinearRegression().fit(X, y)
+  print(reg.score(X, y))
+  
+  cc = reg.coef_
+  for x in range(len(cc)):
+    print(str(cc[x]) + " -  " + inCol[x])
+  
+  
+  print(reg.intercept_)
+  
+  
+  print(reg.predict(np.array([[0,0,3,0,0,0,0,2,0,1,0.75,0,0,0,0,0,8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]])))
+  print(reg.predict(np.array([[1,0,1.5,0,0,0,0,2,0,1,1.5,1.5,1.25,1,0,0,16,0,3,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1.5,0,0.125,0.125,0,0,0,0.5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0.5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]])))
+  
+  #print(reg.predict(np.array([[3, 5]])))
+  
+  
+  
+  ## generating random recipe
+  mu = np.mean(X, axis=0)
+  sigma = np.std(X, axis=0)
+  bestRank = -1000000
+  bestRecipe = []
+  
+  f = 'LinReg-res.csv'
+  if os.path.exists(f):
+    rdf = pd.read_csv(f, index_col=0)
+  else:
+    rdf = pd.DataFrame()
+  
+  cnt = 0
+  while True:
+    new = np.abs(np.floor(np.random.normal(mu, sigma)*16)/16)
+    rank = reg.predict([new])
+    if rank > bestRank:
+      bestRank = rank
+      bestRecipe = new
+      bestDist = 1000000
+      for recipe in X:
+        dist = np.linalg.norm(recipe-new)
+        if dist < bestDist:
+          bestDist = dist
+      print(bestRecipe)
+      br = {}
+      br['#Predicted Rank'] = bestRank[0]
+      br['#Uniqueness'] = bestDist
+      br['#Simplicity'] = np.linalg.norm(new)
+      for x in range(len(inCol)):
+        br[inCol[x]] = bestRecipe[x]
+      #print(br)
+      rdf = rdf.append(br, ignore_index=True)
+      #print(rdf)
+      rdf.to_csv(f)
+      print("Rank: " + str(bestRank) + " Distance: " + str(bestDist) + " Norm: " + str(br['#Simplicity']))
+      cnt = 0
+    cnt += 1
+    if cnt > 1000000:
+      break
 
