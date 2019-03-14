@@ -58,12 +58,13 @@ def wider_model():
   return model
 
 while True:
+  print("\n\n\n ===== BIG GENERAL LOOP ===== \n\n\n")
   # evaluate model with standardized dataset
-  estimator = KerasRegressor(build_fn=baseline_model, epochs=400, batch_size=5,
+  estimator = KerasRegressor(build_fn=baseline_model, epochs=400, batch_size=50,
                              verbose=0)
   
   kfold = KFold(n_splits=10, random_state=seed)
-  results = cross_val_score(estimator, X, y, cv=kfold, n_jobs=8)
+  results = cross_val_score(estimator, X, y, cv=kfold, n_jobs=4)
   print("Results: %.2f (%.2f) MSE" % (results.mean(), results.std()))
   
   estimator.fit(X, y)
@@ -111,10 +112,10 @@ while True:
       rdf = rdf.append(br, ignore_index=True)
       #print(rdf)
       rdf.to_csv(f)
-      print("Rank: " + str(bestRank) + " Distance: " + str(bestDist) + " Norm: " + str(br['#Simplicity']))
+      print("NN-> Rank: " + str(bestRank) + " Distance: " + str(bestDist) + " Norm: " + str(br['#Simplicity']))
       cnt = 0
     cnt += 1
-    if cnt > 1000000:
+    if cnt > 10000:
       break
   cnt = 0
   
@@ -126,10 +127,10 @@ while True:
   estimators = []
   estimators.append(('standardize', StandardScaler()))
   estimators.append(('mlp', KerasRegressor(build_fn=baseline_model, epochs=400,
-                                           batch_size=5, verbose=0)))
+                                           batch_size=50, verbose=0)))
   pipeline = Pipeline(estimators)
   kfold = KFold(n_splits=10, random_state=seed)
-  results = cross_val_score(pipeline, X, y, cv=kfold, n_jobs=8)
+  results = cross_val_score(pipeline, X, y, cv=kfold, n_jobs=4)
   print("Standardized: %.2f (%.2f) MSE" % (results.mean(), results.std()))
   
   pipeline.fit(X, y)
@@ -176,10 +177,10 @@ while True:
       rdf = rdf.append(br, ignore_index=True)
       #print(rdf)
       rdf.to_csv(f)
-      print("Rank: " + str(bestRank) + " Distance: " + str(bestDist) + " Norm: " + str(br['#Simplicity']))
+      print("NNN-> Rank: " + str(bestRank) + " Distance: " + str(bestDist) + " Norm: " + str(br['#Simplicity']))
       cnt = 0
     cnt += 1
-    if cnt > 1000000:
+    if cnt > 10000:
       break
   cnt = 0
   
@@ -189,10 +190,10 @@ while True:
   estimators = []
   estimators.append(('standardize', StandardScaler()))
   estimators.append(('mlp', KerasRegressor(build_fn=larger_model, epochs=400, 
-                                           batch_size=5, verbose=0)))
+                                           batch_size=50, verbose=0)))
   pipeline = Pipeline(estimators)
   kfold = KFold(n_splits=10, random_state=seed)
-  results = cross_val_score(pipeline, X, y, cv=kfold, n_jobs=8)
+  results = cross_val_score(pipeline, X, y, cv=kfold, n_jobs=4)
   print("Larger: %.2f (%.2f) MSE" % (results.mean(), results.std()))
   
   
@@ -240,10 +241,10 @@ while True:
       rdf = rdf.append(br, ignore_index=True)
       #print(rdf)
       rdf.to_csv(f)
-      print("Rank: " + str(bestRank) + " Distance: " + str(bestDist) + " Norm: " + str(br['#Simplicity']))
+      print("DL-> Rank: " + str(bestRank) + " Distance: " + str(bestDist) + " Norm: " + str(br['#Simplicity']))
       cnt = 0
     cnt += 1
-    if cnt > 1000000:
+    if cnt > 10000:
       break
   cnt = 0
   
@@ -255,10 +256,10 @@ while True:
   estimators = []
   estimators.append(('standardize', StandardScaler()))
   estimators.append(('mlp', KerasRegressor(build_fn=wider_model, epochs=400, 
-                                           batch_size=5, verbose=0)))
+                                           batch_size=50, verbose=0)))
   pipeline = Pipeline(estimators)
   kfold = KFold(n_splits=10, random_state=seed)
-  results = cross_val_score(pipeline, X, y, cv=kfold, n_jobs=8)
+  results = cross_val_score(pipeline, X, y, cv=kfold, n_jobs=4)
   print("Wider: %.2f (%.2f) MSE" % (results.mean(), results.std()))
   
   
@@ -307,10 +308,10 @@ while True:
       rdf = rdf.append(br, ignore_index=True)
       #print(rdf)
       rdf.to_csv(f)
-      print("Rank: " + str(bestRank) + " Distance: " + str(bestDist) + " Norm: " + str(br['#Simplicity']))
+      print("WNN-> Rank: " + str(bestRank) + " Distance: " + str(bestDist) + " Norm: " + str(br['#Simplicity']))
       cnt = 0
     cnt += 1
-    if cnt > 1000000:
+    if cnt > 10000:
       break
   cnt = 0
 
