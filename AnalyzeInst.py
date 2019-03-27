@@ -240,13 +240,6 @@ def create_sequences(tokenizer, max_length, directions, recipes):
         #time.sleep(20)
   return np.array(X1), np.array(X2), np.array(y)
 
-X1, X2, y = create_sequences(tokenizer, max_length, train_directions, train_features)
-kf = KFold(n_splits=100)
-for train_index, test_index in kf.split(X1):
-  X1train, X1test = X1[train_index], X1[test_index]
-  X2train, X2test = X2[train_index], X2[test_index]
-  ytrain, ytest = y[train_index], y[test_index]
-
 
 # define the instructional model
 def define_model(recipe_size, vocab_size, max_length):
@@ -270,21 +263,6 @@ def define_model(recipe_size, vocab_size, max_length):
   print(model.summary())
   plot_model(model, to_file='model.png', show_shapes=True)
   return model
-
-
-# fit model
-
-# define the model
-model = define_model(len(inCol), vocab_size, max_length)
-# define checkpoint callback
-filepath = 'model-ep{epoch:03d}-loss{loss:.3f}-val_loss{val_loss:.3f}.h5'
-checkpoint = ModelCheckpoint(filepath, monitor='val_loss', verbose=1, 
-                             save_best_only=True, mode='min')
-## fit model
-model.fit([X1train, X2train], ytrain, epochs=20, verbose=3, callbacks=[checkpoint], 
-          validation_data=([X1test, X2test], ytest))
-
-
 
 # map an integer to a word
 def word_for_id(integer, tokenizer):
@@ -360,32 +338,55 @@ def evaluate_model(model, directions, recipes, tokenizer, max_length):
   return blew_s
   #time.sleep(20)
 
-# load the model
-list_of_files = glob.glob('model*.h5') # * means all if need specific format then *.csv
-filename = max(list_of_files, key=os.path.getctime)
-print(filename)
-model = load_model(filename)
-
-# evaluate model
-blew_scores = evaluate_model(model, train_directions, train_features, 
-                             tokenizer, max_length)
-
-os.rename(filename, filename[:-3] + "-blew-" + str(sum(blew_scores)) + ".h5")
 
 
-for filename in os.listdir('./'):
-  if filename.endswith("-res.csv"): 
-    print(filename)
-    rcps_csv = pd.read_csv(filename, index_col=0)
-    rcps_drctns = {}
-    for idx, row in rcps_csv.iterrows():
-      recipe_features = np.array(row[inCol].values)
-      recipe_directions = generate_drctns(model, tokenizer, recipe_features, max_length)
-      rcps_drctns[idx] = recipe_directions
-      #print(recipe_directions)
-    dfd = pd.DataFrame.from_dict(rcps_drctns, orient='index',
-                                 columns=['Instructions'])
-    dfd.to_csv(filename[:-4] + '-instr.csv')
+X1, X2, y = create_sequences(tokenizer, max_length, train_directions, train_features)
+kf = KFold(n_splits=100)
+for train_index, test_index in kf.split(X1):
+  X1train, X1test = X1[train_index], X1[test_index]
+  X2train, X2test = X2[train_index], X2[test_index]
+  ytrain, ytest = y[train_index], y[test_index]
+
+
+  # define the model
+  model = define_model(len(inCol), vocab_size, max_length)
+  # define checkpoint callback
+  filepath = 'model-ep{epoch:03d}-loss{loss:.3f}-val_loss{val_loss:.3f}.h5'
+  checkpoint = ModelCheckpoint(filepath, monitor='val_loss', verbose=1, 
+                               save_best_only=True, mode='min')
+  ## fit model
+  model.fit([X1train, X2train], ytrain, epochs=10, verbose=3, callbacks=[checkpoint], 
+            validation_data=([X1test, X2test], ytest))
+  
+  
+  
+  
+  # load the model
+  list_of_files = glob.glob('model*.h5') # * means all if need specific format then *.csv
+  filename = max(list_of_files, key=os.path.getctime)
+  print(filename)
+  model = load_model(filename)
+  
+  # evaluate model
+  blew_scores = evaluate_model(model, train_directions, train_features, 
+                               tokenizer, max_length)
+  
+  os.rename(filename, filename[:-3] + "-blew-" + str(sum(blew_scores)) + ".h5")
+
+
+#for filename in os.listdir('./'):
+#  if filename.endswith("-res.csv"): 
+#    print(filename)
+#    rcps_csv = pd.read_csv(filename, index_col=0)
+#    rcps_drctns = {}
+#    for idx, row in rcps_csv.iterrows():
+#      recipe_features = np.array(row[inCol].values)
+#      recipe_directions = generate_drctns(model, tokenizer, recipe_features, max_length)
+#      rcps_drctns[idx] = recipe_directions
+#      #print(recipe_directions)
+#    dfd = pd.DataFrame.from_dict(rcps_drctns, orient='index',
+#                                 columns=['Instructions'])
+#    dfd.to_csv(filename[:-4] + '-instr.csv')
 
 ## https://machinelearningmastery.com/develop-a-deep-learning-caption-generation-model-in-python/
 
