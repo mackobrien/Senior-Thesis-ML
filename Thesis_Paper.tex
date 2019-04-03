@@ -30,15 +30,20 @@ The recipes were gathered by scraping the website allrecipes.com for chocolate c
 		\section{Methods and Experiments}
 		\subsection{Algorithms}
 		\subsubsection{Ingredients}
-		This experiment involved testing 9 different algorithms: Deep Learning Neural Networks, Gradient Boosting, Extreme Trees, Random Forest, Normalized Neural Networks, Wide Neural Networks, Neural Networks SVM, and Linear Regression. Our target variable was the 'rating' of a cookie. By using allrecipes.com as our dataset, we were able to target our predictions off of the ratings included with each recipe in our training dataset. Each algorithm generated new cookie recipes by selecting a previously existing value for each ingredient column and analyzing how the combination compared to similar recipes calculating uniqueness (how different it was compared to our dataset recipes) and simplicity attributes (how many different ingredients are there compared to dataset recipes). Based on the resulting vectors from each, we narrowed our focus to the following three algorithms: Deep Learning, Gradient Boosting, and Extreme Trees. 
+		This experiment involved testing 9 different algorithms: Deep Learning Neural Networks, Gradient Boosting, Extremely Randomized trees, Random Forest, Normalized Neural Networks, Wide Neural Networks, Neural Networks SVM, and Linear Regression. Our target variable was the 'rating' of a cookie. By using allrecipes.com as our dataset, we were able to target our predictions off of the ratings included with each recipe in our training dataset. Each algorithm generated new cookie recipes by selecting a previously existing value for each ingredient column and analyzing how the combination compared to similar recipes calculating uniqueness (how different it was compared to our dataset recipes) and simplicity attributes (how many different ingredients are there compared to dataset recipes). Based on the resulting vectors from each, we narrowed our focus to the following three algorithms: Deep Learning, Gradient Boosting, and Extremely Randomized trees. 
 		\paragraph{Deep Learning}
+		Deep learning is a type of neural network
 		\paragraph{Gradient Boosting}
-		\paragraph{Extreme Trees}
+		The gradient boosting algorithm applies the concept of modifying a weak learner to become better at identifying good outcomes more efficiently.The model, like extremely randomized trees, uses an ensemble of weak prediction models, typically decision trees, to make predictions. However, unlike extremely randomized trees, the gradient boosting algorithm also attempts to minimize errors through a loss function.
+		\paragraph{Extremely Randomized Trees}
+		This algorithm is a variant of the Random Forest regression algorithm, but differs in the fact that at each step of the extreme tree, the entire sample is used and a decision boundary is picked at random, rather than the best one.
+		The extremely randomized trees algorithm was chosen as because it encompasses the ideas behind both itself and the Random Forest algorithm, which were very similar in their results and processes.
 		\subsubsection{Instructions}
-		We trained these algorithms to output recipes of 150 words after analyzing our recipe input in order to achieve the inclusion of full length recipes for about 98\% of the dataset. 
+		We trained these algorithms to output recipes of 150 words after analyzing our recipe input in order to achieve the inclusion of full length recipes for about 98\% of the dataset. The algorithm uses a LSTM recurrent neural network. 
 		\subsection{Baking and Serving}
-		After testing the algorithms, we conducted 5 different taste test experiments, each time testing a different cookie against our control cookie, the Nestle\textsuperscript{\textregistered} Toll House\textsuperscript{\textregistered} chocolate chip cookie.
+		After testing the algorithms, we conducted 5 different taste test experiments, each time testing a different cookie against our control cookie, the Nestle\textsuperscript{\textregistered} Toll House\textsuperscript{\textregistered} chocolate chip cookie. Each taste experiment consisted of 40 cookies each for the control and the machine learning cookie. We asked that each participant take one of each, tasting one and completing its survery before they continued to the second cookie.
 		\subsection{Surveys}
+		For each cookie that a participant tasted, we asked them to complete a survey giving their consent to use their information and questions about different attributes of the cookie and their overall satisfaction with the cookie.
 		Survey questions included:
 		\begin{itemize}
 			\item Appearance  on a scale of 1 (unfit for consumpution) to 5 (Excellent) 
@@ -64,8 +69,10 @@ The recipes were gathered by scraping the website allrecipes.com for chocolate c
 		\subsection{Instructions}
 		As the vector-to-sequence algorithm is previously untested in other research, the end results leave something to desire in terms of ability to finesse and actual usability. However, it is an accomplishment to have gotten a working algorithm that takes in an ingredient vector and outputs a semi-usable recipe. Improvements include ensuring that the instructions contain all ingredients in the vector that contain non-zero values and eliminating repeating loops that the algorithm gets stuck on.
 		\section{Lessons Learned}
+		Our goal was to learn and illustrate the potential of machine learning in a real-world setting in a domain not typically thought of as appropriate for computer interaction. There is still much to be explore in terms of applying machine learning to areas outside of the worlds of finance and mathematical calculations. As we were doing our experimental tests in between and during classes at the college, it was sometime hard to get participation in a timely manner, and it would have been better in hindsight to get commited testers for all 5 taste tests or host the tasting at larger events on campus. Perhaps if we had done all 5 cookies at one event, we could have gotten different results as well.
 
 		\subsection*{Acknowledgments}
+		We would like to thank Marist College as whole, the Computer Science Department, and the Honors Department for their continued support of this research, as well as our testers for their participation in our experiments.
 		\subsection*{References}
 		\section{Ideas for Further Work}
 		\section{Supplemental Material}
