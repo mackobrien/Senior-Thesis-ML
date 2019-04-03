@@ -32,7 +32,7 @@ The recipes were gathered by scraping the website allrecipes.com for chocolate c
 		\subsubsection{Ingredients}
 		This experiment involved testing 9 different algorithms: Deep Learning Neural Networks, Gradient Boosting, Extremely Randomized trees, Random Forest, Normalized Neural Networks, Wide Neural Networks, Neural Networks SVM, and Linear Regression. Our target variable was the 'rating' of a cookie. By using allrecipes.com as our dataset, we were able to target our predictions off of the ratings included with each recipe in our training dataset. Each algorithm generated new cookie recipes by selecting a previously existing value for each ingredient column and analyzing how the combination compared to similar recipes calculating uniqueness (how different it was compared to our dataset recipes) and simplicity attributes (how many different ingredients are there compared to dataset recipes). Based on the resulting vectors from each, we narrowed our focus to the following three algorithms: Deep Learning, Gradient Boosting, and Extremely Randomized trees. 
 		\paragraph{Deep Learning}
-		Deep learning is a type of neural network
+		Deep learning regression is a type of neural network.
 		\paragraph{Gradient Boosting}
 		The gradient boosting algorithm applies the concept of modifying a weak learner to become better at identifying good outcomes more efficiently.The model, like extremely randomized trees, uses an ensemble of weak prediction models, typically decision trees, to make predictions. However, unlike extremely randomized trees, the gradient boosting algorithm also attempts to minimize errors through a loss function.
 		\paragraph{Extremely Randomized Trees}
@@ -46,9 +46,9 @@ The recipes were gathered by scraping the website allrecipes.com for chocolate c
 		For each cookie that a participant tasted, we asked them to complete a survey giving their consent to use their information and questions about different attributes of the cookie and their overall satisfaction with the cookie.
 		Survey questions included:
 		\begin{itemize}
-			\item Appearance  on a scale of 1 (unfit for consumpution) to 5 (Excellent) 
-			\item Aroma on a scale of 1 (unfit for consumpution) to 5 (Excellent) 
-			\item Taste on a scale of 1 (unfit for consumpution) to 5 (Excellent) 
+			\item Appearance on a scale of 1 (unfit for consumption) to 5 (Excellent) 
+			\item Aroma on a scale of 1 (unfit for consumption) to 5 (Excellent) 
+			\item Taste on a scale of 1 (unfit for consumption) to 5 (Excellent) 
 			\item Texture:
 			\begin{multicols}{2}
 				\begin{itemize}
@@ -61,7 +61,7 @@ The recipes were gathered by scraping the website allrecipes.com for chocolate c
 					\item Other
 				\end{itemize}
 			\end{multicols}
-		\item Overall Sastification on a scale of 1 (Hated It) to 10 (Loved It)
+		\item Overall Satisfaction on a scale of 1 (Hated It) to 10 (Loved It)
 				
 		\end{itemize}
 		\section{Analysis}	
