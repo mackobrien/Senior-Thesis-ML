@@ -1,4 +1,5 @@
 \documentclass[11pt, a4paper]{article}
+\usepackage{multicol}
 \begin{document}
 	
 	\title{Optimizing Cookie Recipes for Ratings Using Machine Learning and Deep Vector-to-Sequence Recurrent Neural Models}
@@ -14,21 +15,143 @@
 	\newpage
 	
 		\section{ Introduction: Making a Highly Rate Chocolate Chip Cookie}
+		 The objective of these experiments was to generate a cookie recipe that was optimized for critic ratings by using multiple types of neural and non-neural networks to predict and create chocolate chip cookie recipes based on the input of over 250 human-made recipes and instructions. There were 138 different parameters inputted, including Rating, Calories, and 136 different ingredients such as sugar, flour, and egg.
+		 \newline\newline
+		 To get the instructions, we created a vector-to-sequence algorithm that takes the input of a recipe ingredient vector and uses the instructions from the 250 man-made recipes to make predictions about the sequence of instructions in the output.
 		\subsection*{Related Work}
+		The use of machine learning for baking/cooking is relatively unexplored, but there are some articles, such as \textit{Bayesian Optimization for a Better Dessert}\footnote{Kochanski, Greg et al. “Bayesian Optimization for a Better Dessert.” (2017).} and \textit{Cuisine Classification and Recipe Generation}\footnote{Naik, JitendraB.. “Cuisine Classification and Recipe Generation.” (2015).}.When conducting exploratory research, we were unable to find another study that employed vector-to-sequence algorithms. 
+		
 		\section{Methods and Experiments}
-		\subsection*{Algorithms}
-		\subsubsection*{Deep Learning}
-		\subsubsection*{Gradient Boosting}
-		\subsubsection*{Extreme Trees}
-		\subsection*{Baking and Serving}
-		\subsection*{Surveys}
+		\subsection{Algorithms}
+		This experiment involved testing 9 different algorithms: Deep Learning Neural Networks, Gradient Boosting, Extreme Trees, Random Forest, Normalized Neural Networks, Wide Neural Networks, Neural Networks SVM, and Linear Regression. Based on the resulting vectors from each, we narrowed our focus to the following three algorithms: Deep Learning, Gradient Boosting, and Extreme Trees.
+		\subsubsection{Deep Learning}
+		\subsubsection{Gradient Boosting}
+		\subsubsection{Extreme Trees}
+		\subsection{Baking and Serving}
+		\subsection{Surveys}
+		Survey questions included:
+		\begin{itemize}
+			\item Appearance  on a scale of 1 (unfit for consumpution) to 5 (Excellent) 
+			\item Aroma on a scale of 1 (unfit for consumpution) to 5 (Excellent) 
+			\item Taste on a scale of 1 (unfit for consumpution) to 5 (Excellent) 
+			\item Texture:
+			\begin{multicols}{2}
+				\begin{itemize}
+					\item Crunchy
+					\item Chewy
+					\item Gooey
+					\item Juicy
+					\item Soggy
+					\item Creamy
+					\item Other
+				\end{itemize}
+			\end{multicols}
+		\item Overall Sastification on a scale of 1 (Hated It) to 10 (Loved It)
+				
+		\end{itemize}
 		\section{Analysis}	
+		\subsection{Ingredients}
+		\subsection{Instructions}
+		As the vector-to-sequence algorithm is previously untested in other research, the end results leave something to desire in terms of ability to finesse and actual usability. However, it is an accomplishment to have gotten a working algorithm that takes in an ingredient vector and outputs a semi-usable recipe. Improvements include ensuring that the instructions contain all ingredients in the vector that contain non-zero values and eliminating repeating loops that the algorithm gets stuck on.
 		\section{Lessons Learned}
 		\subsection*{Acknowledgments}
 		\subsection*{References}
 		\section{Ideas for Further Work}
 		\section{Supplemental Material}
-		\subsection*{Recipes}
+		\subsection{Final Recipes with Unedited Instruction Sequences}
+		\subsubsection*{Cookie 1: Deep Learning}
+		Ingredients:
+		\begin{multicols}{2}
+				\begin{itemize}
+					\item1 tsp baking soda
+					\item1.75 c butter
+					\item2 eggs
+					\item1.25 c flour
+					\item .33 c sugar
+					\item.25 tsp vanilla
+					\item.66 c cocoa powder
+					\item5.28 oz creamy pb
+					\item2 egg yolk
+					\item5.28 tbsp espresso powder
+					\item5 tsp salt
+					\item8 oz semisweet
+			\end{itemize}
+		\end{multicols}
+		Instructions:
+		startseq preheat oven to three hundred and fifty degrees one hundred and seventy five degrees in medium bowl whisk together the butter brown sugar and white sugar until smooth beat in the eggs one at time then stir in the vanilla combine the flour baking soda and salt stir in the chocolate chips and walnuts roll dough into balls and place two inches apart on ungreased baking sheet bake for eight to ten minutes in the preheated oven allow cookies to cool on baking sheet for five minutes before removing to wire rack to cool completely endseq
+	\subsubsection*{Cookie 2: Deep Learning}
+	Ingredients
+		\begin{multicols}{2}			\begin{itemize}
+				\item 4 tsp Baking Soda
+				\item1 c brown sugar
+				\item 4 c flour
+				\item .25 c sugar
+				\item 	1 tsp vanilla
+				\item 3 c confectioner’s sugar
+				\item 16 oz semisweet choc chips
+				\item 5 c walnuts
+			\end{itemize}
+		\end{multicols}
+	Instructions: startseq preheat oven to three hundred and seventy five degrees one hundred and ninety degrees in medium bowl whisk together the butter brown sugar and white sugar with an electric mixer in large bowl until smooth add one whisk in the eggs one whisk in separate bowl whisk together the flour mixture and add chocolate and chocolate and not not not combine place balls place one inch balls place one inch balls place two inches balls place two inches balls place one inch balls place one inch balls place one inch balls place balls place one inch balls place one inch balls place balls ball ball ball bake in the preheated oven until set about ten minutes endseq
+   \subsubsection*{Cookie 3- Extreme Tree}
+   Ingredients
+   \begin{multicols}{2}
+		\begin{itemize}
+		\item1 tsp baking soda
+		\item.75 c brown sugar
+		\item.5 c butter
+		\item4 eggs
+		\item4 c flour
+		\item4 oz creamy PB
+		\item2 tsp ground cinnamon
+		\item.5 c mashed avocado
+		\item.66 c milk chocolate chips
+		\item0.5 tsp salt
+		\item12 oz semi sweet choc chips
+	\end{itemize}
+	\end{multicols}
+Instructions: startseq preheat oven to three hundred and seventy five degrees one hundred and ninety degrees in medium bowl whisk together the butter brown sugar and brown sugar with an electric mixer in large bowl until smooth add eggs one at medium speed beat in the eggs one at time beating each addition beat in the flour mixture stir in the chocolate chips and walnuts roll balls and place two inches apart on ungreased cookie sheet bake for eight to ten minutes in the preheated oven allow cookies to cool on baking sheet for five minutes before removing to wire rack to cool completely endseq
+ \subsubsection*{Cookie 4- Gradient Boosting}
+ Ingredients
+ \begin{multicols}{2}
+		\begin{itemize}
+		\item1.5 c butter
+		\item2 egg
+		\item.25 c sugar
+		\item1 tsp vanilla
+		\item2 c flaked coconut
+		\item12 tsp hot water
+		\item0.5 mashed avocado
+		\item0.75 c matzo cake meal
+		\item0.25 plain yogurt
+		\item1 tsp salt
+		\item16 oz semisweet choc chips
+		
+	\end{itemize}
+\end{multicols}
+Instructions: startseq whisk together the flour and butter add confectioners sugar and vanilla extract with an an electric add whisk flour and stir until dough is distributed and enough to least least least least least thirty minutes or until not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not not break up the not not break up the not half add chocolate and not not half add chocolate and not not half add chocolate and not not half add chocolate and not not half enough to least least least minutes or until not not not not not not not not not not not not not not not not not not not not not not not half add chocolate and not not half add chocolate enough to separate
+
+
+ \subsubsection*{Cookie 5- Extreme Tree}
+ 	Ingredients
+ 	\begin{multicols}{2}
+		\begin{itemize}
+		\item1 tsp baking soda
+		\item1 c brown sugar
+		\item1 c butter
+		\item2 egg
+		\item1.75 c flour
+		\item1.5 c mint filled morsels 
+		\item0.25 c sugar
+		\item1 tsp vanilla
+		\item1 tsp baking powder
+		\item1 egg yolk
+		\item1 tsp ground cinnamon
+		\item0.5 tsp salt
+		\item0.5 c shortening
+	\end{itemize}
+\end{multicols}
+Instructions: startseq preheat oven to three hundred and fifty degrees one hundred and seventy five degrees in medium bowl cream together the butter brown sugar and white sugar until smooth beat in the eggs one at time then stir in the vanilla and vanilla combine the flour baking soda and salt stir into the creamed mixture until just blended fold in the chocolate chips drop by rounded spoonfuls onto the prepared cookie sheets bake for eight to ten minutes in the preheated oven allow cookies to cool on baking sheet for five minutes before removing to wire rack to cool completely endseq
 		\subsection*{Survey Questions}
 	
 	
