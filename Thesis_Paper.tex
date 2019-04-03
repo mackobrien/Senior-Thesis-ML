@@ -1,5 +1,6 @@
 \documentclass[11pt, a4paper]{article}
 \usepackage{multicol}
+\usepackage{textcomp}
 \begin{document}
 	
 	\title{Optimizing Cookie Recipes for Ratings Using Machine Learning and Deep Vector-to-Sequence Recurrent Neural Models}
@@ -10,7 +11,9 @@
 		\textbf{Abstract}
 	\end{center}
 
-	This project employed machine learning concepts and processes in an attempt to teach a computer an algorithm that outputs a cookie recipe that is comparable to human-made recipes.The process involved feeding the algorithms a data set of cookie recipes that included details such as ingredients, ratings, and calories. A second algorithm was used to construct instructions for a recipe once ingredients were selected based off of instructions from the dataset of recipes.The recipes were gathered by scraping the website allrecipes.com for chocolate chip cookie recipes that were compiled in order to “teach” the computer to recognize tasty cookies by looking at things such as reviews, ingredients, and calories.
+	This project employed machine learning concepts and processes in an attempt to teach a computer an algorithm that outputs a cookie recipe that is comparable to human-made recipes.
+The process involved feeding the algorithms a data set of cookie recipes that included details such as ingredients, ratings, and calories. A second algorithm was used to construct instructions for a recipe once ingredients were selected based off of instructions from the dataset of recipes.
+The recipes were gathered by scraping the website allrecipes.com for chocolate chip cookie recipes that were compiled in order to “teach” the computer to recognize tasty cookies by looking at things such as reviews, ingredients, and calories.
 	
 	\newpage
 	
@@ -19,15 +22,22 @@
 		 \newline\newline
 		 To get the instructions, we created a vector-to-sequence algorithm that takes the input of a recipe ingredient vector and uses the instructions from the 250 man-made recipes to make predictions about the sequence of instructions in the output.
 		\subsection*{Related Work}
-		The use of machine learning for baking/cooking is relatively unexplored, but there are some articles, such as \textit{Bayesian Optimization for a Better Dessert}\footnote{Kochanski, Greg et al. “Bayesian Optimization for a Better Dessert.” (2017).} and \textit{Cuisine Classification and Recipe Generation}\footnote{Naik, JitendraB.. “Cuisine Classification and Recipe Generation.” (2015).}.When conducting exploratory research, we were unable to find another study that employed vector-to-sequence algorithms. 
+		The use of machine learning for baking/cooking is relatively unexplored, but there are some articles, such as \textit{Bayesian Optimization for a Better Dessert}\footnote{Kochanski, Greg et al. “Bayesian Optimization for a Better Dessert.” (2017).} and \textit{Cuisine Classification and Recipe Generation}\footnote{Naik, JitendraB.. “Cuisine Classification and Recipe Generation.” (2015).}. Kochanski's Bayesian Optimization study applied Bayesian Optimization in an effort to optimize chocolate chip cookies and was comprised of a mixed system of human chefs,raters, and a machine optimizer in 144 experiments across the country. They used Vizier black-box optimization tool for new recipes using a Bayesian Optimization bandit algorithm based on Gaussian Process model. 
+		Similarly to our experiments, Naik's study used allrecipes.com for data collection. However, unlike ours, they employed a generative model based on Bayesian pairwise probabilities calculated from collected recipes. They then used  the  input taken in and pairs to generate ingredients and instructions. Also, when Google\textsuperscript{TM} attempted to use AI to find the perfect chocolate chip cookie, they also employed Bayesian Optimization\footnote{Clifford, Catherine. “Alphabet Billionaire Eric Schmidt: Google Used A.I. to Find the Perfect Chocolate Chip Cookie Recipe.” CNBC, CNBC, 29 Jan. 2018.}.
+		
+		When conducting exploratory research, we were unable to find another study that employed vector-to-sequence algorithms. 
 		
 		\section{Methods and Experiments}
 		\subsection{Algorithms}
-		This experiment involved testing 9 different algorithms: Deep Learning Neural Networks, Gradient Boosting, Extreme Trees, Random Forest, Normalized Neural Networks, Wide Neural Networks, Neural Networks SVM, and Linear Regression. Based on the resulting vectors from each, we narrowed our focus to the following three algorithms: Deep Learning, Gradient Boosting, and Extreme Trees.
-		\subsubsection{Deep Learning}
-		\subsubsection{Gradient Boosting}
-		\subsubsection{Extreme Trees}
+		\subsubsection{Ingredients}
+		This experiment involved testing 9 different algorithms: Deep Learning Neural Networks, Gradient Boosting, Extreme Trees, Random Forest, Normalized Neural Networks, Wide Neural Networks, Neural Networks SVM, and Linear Regression. Our target variable was the 'rating' of a cookie. By using allrecipes.com as our dataset, we were able to target our predictions off of the ratings included with each recipe in our training dataset. Each algorithm generated new cookie recipes by selecting a previously existing value for each ingredient column and analyzing how the combination compared to similar recipes calculating uniqueness (how different it was compared to our dataset recipes) and simplicity attributes (how many different ingredients are there compared to dataset recipes). Based on the resulting vectors from each, we narrowed our focus to the following three algorithms: Deep Learning, Gradient Boosting, and Extreme Trees. 
+		\paragraph{Deep Learning}
+		\paragraph{Gradient Boosting}
+		\paragraph{Extreme Trees}
+		\subsubsection{Instructions}
+		We trained these algorithms to output recipes of 150 words after analyzing our recipe input in order to achieve the inclusion of full length recipes for about 98\% of the dataset. 
 		\subsection{Baking and Serving}
+		After testing the algorithms, we conducted 5 different taste test experiments, each time testing a different cookie against our control cookie, the Nestle\textsuperscript{\textregistered} Toll House\textsuperscript{\textregistered} chocolate chip cookie.
 		\subsection{Surveys}
 		Survey questions included:
 		\begin{itemize}
@@ -54,11 +64,29 @@
 		\subsection{Instructions}
 		As the vector-to-sequence algorithm is previously untested in other research, the end results leave something to desire in terms of ability to finesse and actual usability. However, it is an accomplishment to have gotten a working algorithm that takes in an ingredient vector and outputs a semi-usable recipe. Improvements include ensuring that the instructions contain all ingredients in the vector that contain non-zero values and eliminating repeating loops that the algorithm gets stuck on.
 		\section{Lessons Learned}
+
 		\subsection*{Acknowledgments}
 		\subsection*{References}
 		\section{Ideas for Further Work}
 		\section{Supplemental Material}
 		\subsection{Final Recipes with Unedited Instruction Sequences}
+		\subsubsection*{Control Cookie: Nestle\textsuperscript{\textregistered} Toll House\textsuperscript{\textregistered} Cookie}
+		Ingredients:
+			\begin{multicols}{2}
+			\begin{itemize}
+				\item2 1/4 cups all-purpose flour
+				\item1 teaspoon baking soda
+				\item1 teaspoon salt
+				\item1 cup (2 sticks) butter, softened
+				\item3/4 cup granulated sugar
+				\item3/4 cup packed brown sugar
+				\item1 teaspoon vanilla extract
+				\item2 large eggs
+				\item2 cups NESTLE\textsuperscript{\textregistered} TOLL HOUSE\textsuperscript{\textregistered}  Semi-Sweet Chocolate Morsels
+				\item1 cup chopped nuts
+			\end{itemize}
+		\end{multicols}
+		Instructions: Preheat oven to 375\textdegree F. Combine flour, baking soda and salt in small bowl. Beat butter, granulated sugar, brown sugar and vanilla extract in large mixer bowl until creamy. Add eggs, one at a time, beating well after each addition. Gradually beat in flour mixture. Stir in morsels and nuts. Drop by rounded tablespoon onto ungreased baking sheets. Bake for 9 to 11 minutes or until golden brown. Cool on baking sheets for 2 minutes; remove to wire racks to cool completely. 
 		\subsubsection*{Cookie 1: Deep Learning}
 		Ingredients:
 		\begin{multicols}{2}
@@ -152,7 +180,8 @@ Instructions: startseq whisk together the flour and butter add confectioners sug
 	\end{itemize}
 \end{multicols}
 Instructions: startseq preheat oven to three hundred and fifty degrees one hundred and seventy five degrees in medium bowl cream together the butter brown sugar and white sugar until smooth beat in the eggs one at time then stir in the vanilla and vanilla combine the flour baking soda and salt stir into the creamed mixture until just blended fold in the chocolate chips drop by rounded spoonfuls onto the prepared cookie sheets bake for eight to ten minutes in the preheated oven allow cookies to cool on baking sheet for five minutes before removing to wire rack to cool completely endseq
-		\subsection*{Survey Questions}
+
+		
 	
 	
 
