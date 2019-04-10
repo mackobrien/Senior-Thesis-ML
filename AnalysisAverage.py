@@ -39,39 +39,36 @@ sns.distplot(Control,kde=False,fit_kws={"color":"magenta"},fit=stats.gamma, colo
 plt.legend()
 plt.show()
 
+
+#Batch A
 #manually ordered csv/excels so that email match up and removed those who only tasted one
 mcl1 = pd.read_csv('mcl_1.csv') 
 control1 = pd.read_csv('control_1.csv')
-print(mcl1)
-print(control1)
+#print(mcl1)
+#print(control1)
 #array of items doing control-machine learning cookie
 #we want positive values, so that machine is ranked highed than control
 compare1 = mcl1['overall_sat']-control1['overall_sat']
-print(compare1)
+#print(compare1)
+
+#Batch E
+mcl5 = pd.read_csv('mlc5.csv') 
+control5 = pd.read_csv('control5.csv')
+#print(mcl5)
+#print(control5)
+#array of items doing control-machine learning cookie
+#we want positive values, so that machine is ranked highed than control
+compare5 = mcl5['overall_sat']-control5['overall_sat']
+#print(compare5)
+
 plt.figure()
-sns.distplot(compare1,kde=False,fit_kws={"color":"navy"},fit=stats.gamma,color="navy",label="D")
+sns.distplot(compare1,kde=False,fit_kws={"color":"navy"},fit=stats.gamma,color="navy",label="A")
+sns.distplot(compare5,kde=False,fit_kws={"color":"magenta"},fit=stats.gamma,color="magenta",label="E")
+
 plt.legend()
 plt.show()
 
-#calculate B 
-#differenceB=[];
-#for i in range(0,25):
-#    differenceB.append(abs(controlB[i]-mclBExtreme[i]))
 
-#calculate C 
-#differenceC=[];
-#for i in range(0,25):
-#    differenceC.append(abs(controlC[i]-mclCExtreme[i]))
-
-#calculate D 
-#differenceD=[];
-#for i in range(0,?):
-#    differenceD.append(abs(controlD[i]-mclDDeep[i]))
-
-#calculate E 
-#differenceE=[];
-#for i in range(0,?):
-#    differenceE.append(abs(controlE[i]-mclEDeep[i]))
 
 #sns.distplot(differenceA,kde=False,fit_kws={"color":"red"},fit=stats.gamma,color="red",label="A")
 #sns.distplot(differenceB,kde=False,fit_kws={"color":"darkgreen"},fit=stats.gamma, color="darkgreen", label="B")
