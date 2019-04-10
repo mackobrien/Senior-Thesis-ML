@@ -117,8 +117,8 @@ compare5 = mcl5['overall_sat']-control5['overall_sat']
 plt.figure()
 sns.distplot(compare1,kde=False,fit_kws={"color":"navy"},fit=stats.gamma,color="navy",label="Batch A")
 sns.distplot(compare2,kde=False,fit_kws={"color":"lime"},fit=stats.gamma,color="lime",label=" Batch B")
-sns.distplot(compare3,kde=False,fit_kws={"color":"magenta"},fit=stats.gamma,color="magenta",label=" Batch E")
-sns.distplot(compare4,kde=False,fit_kws={"color":"orange"},fit=stats.gamma,color="orange",label=" Batch E")
+sns.distplot(compare3,kde=False,fit_kws={"color":"magenta"},fit=stats.gamma,color="magenta",label=" Batch C")
+sns.distplot(compare4,kde=False,fit_kws={"color":"orange"},fit=stats.gamma,color="orange",label=" Batch D")
 sns.distplot(compare5,kde=False,fit_kws={"color":"blue"},fit=stats.gamma,color="blue",label=" Batch E")
 
 plt.legend()
