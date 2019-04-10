@@ -39,17 +39,19 @@ sns.distplot(Control,kde=False,fit_kws={"color":"magenta"},fit=stats.gamma, colo
 plt.legend()
 plt.show()
 
-#calculate absolute 
-#controlA=Control.subset(0,32)
-#ControlB=Control.subset(32,57)
-#ControlC=Control.subset(57,82)
-#ControlD=Control.subset(83,115)
-#ControlE=Control.subset(?,?)
-
-#calculate A 
-#differenceA=[];
-#for i in range(0,32):
-#    differenceA.append(abs(controlA[i]-mclAGradient[i]))
+#manually ordered csv/excels so that email match up and removed those who only tasted one
+mcl1 = pd.read_csv('mcl_1.csv') 
+control1 = pd.read_csv('control_1.csv')
+print(mcl1)
+print(control1)
+#array of items doing control-machine learning cookie
+#we want positive values, so that machine is ranked highed than control
+compare1 = mcl1['overall_sat']-control1['overall_sat']
+print(compare1)
+plt.figure()
+sns.distplot(compare1,kde=False,fit_kws={"color":"navy"},fit=stats.gamma,color="navy",label="D")
+plt.legend()
+plt.show()
 
 #calculate B 
 #differenceB=[];

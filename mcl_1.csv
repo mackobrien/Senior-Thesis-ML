@@ -1,0 +1,26 @@
+﻿look,aroma,taste,texture,overall_sat,email,sendEmail,gender,age
+3,3,2,"chewy, gooey",5,Alexander.antaki1@marist.edu,"Yes, email me the details",Male,18-24
+3,4,5,"chewy, gooey",8,alexia.hill1@marist.edu,"Yes, email me the details",Female,18-24
+2,1,1,soggy,3,ariana.devine1@marist.edu,"No, I'm fine",Female,18-24
+5,5,5,chewy,9,ashley.allicino1@marist.edu,"Yes, email me the details",Female,18-24
+3,4,3,gooey,6,brian.gormanly@marist.edu,"Yes, email me the details",Male,35-44
+2,2,2,chewy,4,cameron.brenner1@marist.edu,"Yes, email me the details",Male,18-24
+4,5,5,"chewy, gooey",10,camillerenaud12@gmail.com,"Yes, email me the details",Female,18-24
+2,2,3,"chewy, gooey",5,Cassie.schaaf@marist.edu,"Yes, email me the details",Female,45-54
+4,5,5,gooey,9,cynthia.worrad@marist.edu,"No, I'm fine",Female,45-54
+3,2,2,"gooey, creamy",4,Edwin.Forson1@marist.edu,"Yes, email me the details",Male,18-24
+3,4,4,"chewy, gooey",7,Janine.Lim1@marist.edu,"Yes, email me the details",Female,18-24
+3,3,4,"chewy, gooey, soggy",7,Jenna.vanadia1@marist.edu,"Yes, email me the details",Female,18-24
+3,4,4,chewy,9,lars.schouten1@marist.edu,"No, I'm fine",Male,18-24
+2,3,3,soggy,6,mary.vange1@marist.edu,"No, I'm fine",Female,18-24
+3,4,4,"chewy, gooey",8,Matt.Johnson@marist.edu,"Yes, email me the details",Male,35-44
+2,4,3,"chewy, gooey",5,Matthew.Moldawsky1@marist.edu,"No, I'm fine",Male,18-24
+2,3,4,"chewy, soggy",6,Matthew.oakley1@marist.edu,"Yes, email me the details",Male,18-24
+3,3,3,"chewy, gooey",6,megan.meredith1@marist.edu,"Yes, email me the details",Female,18-24
+2,3,5,"chewy, gooey",8,michael.borgese1@marist.edu,"Yes, email me the details",Male,18-24
+2,5,4,chewy,8,Nora.abdelrahman1@marist.edu,"Yes, email me the details",Female,18-24
+2,3,2,crunchy,3,Payton.breindel1@marist.edu,"No, I'm fine",Female,18-24
+4,3,4,chewy,8,rachel.hawks1@marist.edu,"No, I'm fine",Female,18-24
+2,2,3,"chewy, gooey",6,Ryan.pepe1@marist.edu,"No, I'm fine",Male,75+
+2,3,4,"chewy, soggy",6,Sonia.ikram1@marist.edu,"No, I'm fine",Female,18-24
+3,4,4,chewy,9,vfanelli25@gmail.com,"Yes, email me the details",Male,18-24
