@@ -17,22 +17,27 @@ sns.set(color_codes=True)
 mclAGradient = pd.read_csv('Gradient4_Satisfaction.csv') #32
 mclBExtreme = pd.read_csv('Extreme5_Satisfaction.csv') #25 answers
 mclCExtreme = pd.read_csv('Extreme3_Satisfaction.csv') # 25 
-#mclDDeep = pd.read_csv('Deep1_Satisfaction.csv') #32 at 12:41
-#mclEDeep = pd.read_csv('Deep2_Satisfaction.csv')
-#Control = pd.read_csv('Control_Satisfaction.csv')
+mclDDeep = pd.read_csv('Deep1_Satisfaction.csv') #32 at 12:41
+mclEDeep = pd.read_csv('Deep2_Satisfaction.csv')
+Control = pd.read_csv('Control_Satisfaction.csv')
 
 
 #print(mclAGradient)
-sns.distplot(mclAGradient,kde=False,fit_kws={"color":"red"},fit=stats.gamma,color="red",label="A")
-sns.distplot(mclBExtreme,kde=False,fit_kws={"color":"darkgreen"},fit=stats.gamma, color="darkgreen", label="B")
-sns.distplot(mclCExtreme,kde=False,fit_kws={"color":"deepskyblue"},fit=stats.gamma,color="deepskyblue",label="C")
-#sns.distplot(mclDDeep,kde=False,fit_kws={"color":"orange"},fit=stats.gamma,color="orange",label="D")
-#sns.distplot(mclEDeep,kde=False,fit_kws={"color":"purple"},fit=stats.gamma,color="purple",label="E")
-#sns.distplot(Control,kde=False,fit_kws={"color":"yellow"},fit=stats.gamma, color="yellow", label="Control")
+plt.figure()
+sns.distplot(mclAGradient,kde=False,fit_kws={"color":"darkorange"},fit=stats.gamma,color="darkorange",label="A")
+sns.distplot(mclBExtreme,kde=False,fit_kws={"color":"green"},fit=stats.gamma, color="lime", label="B")
+sns.distplot(mclCExtreme,kde=False,fit_kws={"color":"aqua"},fit=stats.gamma,color="aqua",label="C")
+sns.distplot(Control,kde=False,fit_kws={"color":"magenta"},fit=stats.gamma, color="magenta", label="Control")
+
 plt.legend()
 plt.show()
 
-
+plt.figure()
+sns.distplot(mclDDeep,kde=False,fit_kws={"color":"navy"},fit=stats.gamma,color="navy",label="D")
+sns.distplot(mclEDeep,kde=False,fit_kws={"color":"yellow"},fit=stats.gamma,color="yellow",label="E")
+sns.distplot(Control,kde=False,fit_kws={"color":"magenta"},fit=stats.gamma, color="magenta", label="Control")
+plt.legend()
+plt.show()
 
 #calculate absolute 
 #controlA=Control.subset(0,32)
