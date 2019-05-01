@@ -38,7 +38,7 @@ vallosses=[]
 bleus=[]
 for x in range(0,count):
     #print(scoresArr[x])
-    epochs.append(int(scoresArr[x][23:24]))
+    epochs.append(int(scoresArr[x][22:24]))
     #print("e",epoch)
     losses.append(float(scoresArr[x][29:34]))
     #print(loss)
@@ -64,28 +64,68 @@ for i in range(0,count):
 lis={'run':num,'epoch':epochs,'loss':losses,'valloss':vallosses,'bleu':bleus}
 df3 = pd.DataFrame({'run':num,'epoch':epochs,'loss':losses,'valloss':vallosses,'bleu':bleus})
 print(df3.head())
+df3.to_csv('df3.csv')
 #colors=['black','gray','silver','rosybrown','firebrick','red','darksalmon','sienna',
   #      'sandybrown','bisque','tan','moccasin','gold','darkkhaki','lightgoldenrodyellow',
    #     'olivedrab','chartreuse','palegreen','darkgreen','seagreen','mediumspringgreen',
     #    'lightseagreen','paleturquoise','darkcyan','darkturquoise','deepskyblue','aliceblue',
      #   'slategray','royalblue','navy','blue','mediumpurple']
-b=0
+bx = []
+bt = []
+bv = []
+bleuS = []
+b = 0
 prevrun=0
 run=0
 plt.figure()
 #wont plot every single run this way???
 #sns.lineplot(x='epoch',y='loss',hue='run',data=df3)
-plt.figure()
-for row in df3.head().itertuples():
+#plt.figure()
+for idx, row in df3.iterrows():
     print(row)
     run=row.run
     if prevrun!=run:
+        plt.plot(bx,bt,'r--',label='Run '+str(b), alpha=0.25)
+        plt.plot(bx,bv,'g',label='Run '+str(b), alpha=0.25)
         b+=1
-    sns.lineplot(x=row.epoch,y=row.loss,hue=row.run,index='Index',data=df3)
+        bx=[]
+        bt=[]
+        bv=[]
+    bx.append(row.epoch)
+    bt.append(row.loss)
+    bv.append(row.valloss)
+    if row.bleu > 0:
+        bleuS.append([row.epoch,row.bleu])
     prevrun=run
     print(b)
+
+plt.ylabel('Training Loss')
+plt.xlabel('Epoch')
+plt.show()
 #plt.figure()
 #plt.scatter(x="epoch",y="valloss",c="run",data=df2)
 
+blewD = {}
+plt.figure()
+for item in bleuS:
+    if item[0] in blewD.keys():
+        lst = blewD[item[0]]
+        lst.append(item[1])
+        blewD[item[0]] = lst
+    else:
+        blewD[item[0]] = [item[1]]
 
+    plt.plot(item[0], item[1],'kx', alpha=0.5)
+
+plt.ylabel('Aggregated BLEU Score')
+plt.xlabel('Epoch')
+plt.show()
+
+
+plt.figure()
+plt.boxplot([blewD[key] for key in sorted(blewD.keys())])
+plt.xticks([1,2,3,4,5,6,7,8], [str(int(key)) for key in sorted(blewD.keys())])
+plt.ylabel('Aggregated BLEU Score')
+plt.xlabel('Epoch')
+plt.show()
 
