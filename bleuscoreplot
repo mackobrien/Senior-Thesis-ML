@@ -1,0 +1,91 @@
+#!/usr/bin/env python2
+# -*- coding: utf-8 -*-
+"""
+Created on Thu Apr 25 21:13:43 2019
+
+@author: mackenzieobrien
+"""
+import seaborn as sns; sns.set()
+import matplotlib.pyplot as plt
+import pandas as pd
+scores = open("flist.txt","r").readlines()
+
+count = len(scores)
+
+
+#scoresArr = pd.DataFrame(index=0,columns=columns)
+#scoresArr = scoresArr.fillna(0)
+scoresArr=[]
+runs=0
+
+for i in range(0,count):
+    sc=scores[i]
+    #print(sc)
+    if "ep001" in sc:
+        runs=runs+1
+    
+    scoresArr.append(sc)
+    
+    
+#print(scoresArr)
+#print(runs)
+
+a=0;
+num=[];
+epochs=[]
+losses=[]
+vallosses=[]
+bleus=[]
+for x in range(0,count):
+    #print(scoresArr[x])
+    epochs.append(int(scoresArr[x][23:24]))
+    #print("e",epoch)
+    losses.append(float(scoresArr[x][29:34]))
+    #print(loss)
+    vallosses.append(float(scoresArr[x][43:48]))
+    
+    #print(valloss)
+    if("blew" in scoresArr[x]):
+        #print(scoresArr[a])
+        bleus.append(float(scoresArr[x][54:62]))
+        #print(blew)
+        
+        #sns.scatterplot(x=epoch, y=loss)
+        num.append(a)
+        a+=1
+    else:
+        bleus.append(0)
+        num.append(a)
+  
+index1=[]
+for i in range(0,count):
+    index1.append(i)
+
+lis={'run':num,'epoch':epochs,'loss':losses,'valloss':vallosses,'bleu':bleus}
+df3 = pd.DataFrame({'run':num,'epoch':epochs,'loss':losses,'valloss':vallosses,'bleu':bleus})
+print(df3.head())
+#colors=['black','gray','silver','rosybrown','firebrick','red','darksalmon','sienna',
+  #      'sandybrown','bisque','tan','moccasin','gold','darkkhaki','lightgoldenrodyellow',
+   #     'olivedrab','chartreuse','palegreen','darkgreen','seagreen','mediumspringgreen',
+    #    'lightseagreen','paleturquoise','darkcyan','darkturquoise','deepskyblue','aliceblue',
+     #   'slategray','royalblue','navy','blue','mediumpurple']
+b=0
+prevrun=0
+run=0
+plt.figure()
+#wont plot every single run this way???
+#sns.lineplot(x='epoch',y='loss',hue='run',data=df3)
+plt.figure()
+for row in df3.head().itertuples():
+    print(row)
+    run=row.run
+    if prevrun!=run:
+        b+=1
+    sns.lineplot(x=row.epoch,y=row.loss,hue=row.run,index='Index',data=df3)
+    prevrun=run
+    print(b)
+#plt.figure()
+#plt.scatter(x="epoch",y="valloss",c="run",data=df2)
+
+
+
