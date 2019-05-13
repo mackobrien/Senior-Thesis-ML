@@ -44,14 +44,18 @@ for idx, row in dfins.iterrows():
 #print(instructions)
 
 # This plot shows that a word length of 150 contains at least 98% of the data
-#plt.figure()
-#plt.hist(cnt, bins=50)
-#plt.show()
-#
-#plt.figure()
-#for k,v in fc.iteritems():
-#  plt.bar(int(k), v, color='r')
-#plt.show()
+plt.figure(figsize=(12,8))
+plt.hist(cnt, bins=50)
+plt.xlabel('Number of words in the instructions')
+plt.ylabel('Frequency count')
+plt.savefig('histogram_150_words.png', bbox_inches='tight',dpi=350)
+plt.show()
+
+plt.figure()
+for k,v in fc.items():
+  plt.bar(int(k), v, color='r')
+plt.show()
+time.sleep(100)
 
 
 # extract directions for recipes
